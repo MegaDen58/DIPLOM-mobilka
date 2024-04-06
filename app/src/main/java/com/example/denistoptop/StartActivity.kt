@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import com.example.denistoptop.dto.UserDto
 import com.example.denistoptop.service.UserService
 import com.google.gson.Gson
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -34,13 +37,10 @@ class StartActivity : AppCompatActivity() {
             val login: EditText = findViewById(R.id.login)
             val password: EditText = findViewById(R.id.password)
 
-            val userDto = UserDto(
-                login.text.toString(),
-                password.text.toString()
-            )
-            val jsonUser = Gson().toJson(userDto)
+            val jsonUser = "{\"login\": \"$login\", \"password\": \"$password\"}"
+            val requestBody = RequestBody.create(MediaType.parse("application/json"), jsonUser)
+            val call = userService.registerUser(requestBody)
 
-            val call = userService.loginUser(jsonUser)
             call.enqueue(object : Callback<UserDto> {
                 override fun onResponse(call: Call<UserDto>, response: Response<UserDto>) {
                     if (response.isSuccessful) {
@@ -52,6 +52,8 @@ class StartActivity : AppCompatActivity() {
                             // Например:
                             // val intent = Intent(this@MainActivity, OtherActivity::class.java)
                             // startActivity(intent)
+                            Toast.makeText(this@StartActivity, "Всё ок :)", Toast.LENGTH_SHORT).show()
+
                         } else {
                             // Пользователь пустой, возможно, неудачный вход
                             // Обработать вход не удался
