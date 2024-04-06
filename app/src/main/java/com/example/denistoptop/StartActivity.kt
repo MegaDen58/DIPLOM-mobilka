@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import com.example.denistoptop.model.User
+import com.example.denistoptop.dto.UserDto
 import com.example.denistoptop.service.UserService
 import com.google.gson.Gson
 import retrofit2.Call
@@ -34,12 +34,15 @@ class StartActivity : AppCompatActivity() {
             val login: EditText = findViewById(R.id.login)
             val password: EditText = findViewById(R.id.password)
 
-            val user = User(login.text.toString(), password.text.toString())
-            val jsonUser = Gson().toJson(user)
+            val userDto = UserDto(
+                login.text.toString(),
+                password.text.toString()
+            )
+            val jsonUser = Gson().toJson(userDto)
 
             val call = userService.loginUser(jsonUser)
-            call.enqueue(object : Callback<User> {
-                override fun onResponse(call: Call<User>, response: Response<User>) {
+            call.enqueue(object : Callback<UserDto> {
+                override fun onResponse(call: Call<UserDto>, response: Response<UserDto>) {
                     if (response.isSuccessful) {
                         // Обработка успешного ответа
                         val userResponse = response.body()
@@ -58,7 +61,7 @@ class StartActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<User>, t: Throwable) {
+                override fun onFailure(call: Call<UserDto>, t: Throwable) {
                     // Обработка ошибок сети или других ошибок
                 }
             })
