@@ -4,101 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/untitled_1"
-    tools:context=".StartActivity">
+    tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/gearGoText"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/image__2_" />
-
-    <ImageView
-        android:id="@+id/sportAndTourismText"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="234dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/sportandtourism" />
-
-    <ImageView
-        android:id="@+id/ball"
-        android:layout_width="match_parent"
-        android:layout_height="168dp"
-        android:layout_marginTop="100dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ball" />
-
-    <EditText
-        android:id="@+id/login"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="336dp"
-        android:layout_marginRight="20dp"
-        android:background="#d2d4d8"
-        android:hint="Введите логин"
-        android:paddingStart="9dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="400dp"
-        android:layout_marginRight="20dp"
-        android:background="#d2d4d8"
-        android:hint="Введите пароль"
-        android:inputType="textPassword"
-        android:paddingStart="9dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/loginButton"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="512dp"
-        android:layout_marginRight="20dp"
-        android:background="#607e36"
-        android:text="Войти"
-        android:textColor="#FFFFFF"
-        android:textSize="30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/registrationButton"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="650dp"
-        android:layout_marginRight="20dp"
-        android:background="#bd590d"
-        android:text="Регистрация"
-        android:textColor="#FFFFFF"
-        android:textSize="30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="628dp"
-        android:layout_marginRight="20dp"
-        android:foreground="#bd590d"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_layout"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
