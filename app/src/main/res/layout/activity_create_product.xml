@@ -59,4 +59,12 @@
         android:layout_below="@id/galleryButton"
         android:orientation="horizontal"/>
 
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imagesRecyclerView"
+        android:text="Submit"
+        android:padding="16dp"/>
+
 </RelativeLayout>
