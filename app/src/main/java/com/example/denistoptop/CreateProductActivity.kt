@@ -131,7 +131,9 @@ class CreateProductActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val imageUrl = response.body()
                         // Делайте что-то с URL изображения, например, сохраняйте его в базу данных или отображайте на экране
+                        Log.d("ImageUpload", "Изображение загружено: $imageUrl")
                         Toast.makeText(this@CreateProductActivity, "Изображение загружено: $imageUrl", Toast.LENGTH_SHORT).show()
+
                     } else {
                         Toast.makeText(this@CreateProductActivity, "Ошибка при загрузке изображения", Toast.LENGTH_SHORT).show()
                     }
