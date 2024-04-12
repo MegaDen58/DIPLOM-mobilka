@@ -9,10 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.denistoptop.adapter.ImagesAdapter
+import com.example.denistoptop.dto.ProductDto
+import com.example.denistoptop.dto.UserDto
 import com.example.denistoptop.service.ProductService
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -35,6 +39,7 @@ class CreateProductActivity : AppCompatActivity() {
     private lateinit var adapter: ImagesAdapter
     private lateinit var productService: ProductService
     private val READ_EXTERNAL_STORAGE_REQUEST = 123
+    private var imagesName: MutableList<String> = mutableListOf()
     companion object {
         const val PICK_IMAGE_REQUEST = 1
     }
@@ -59,6 +64,7 @@ class CreateProductActivity : AppCompatActivity() {
 
         submitButton.setOnClickListener {
             uploadImagesToServer()
+
         }
 
         productService = Retrofit.Builder()
@@ -113,7 +119,12 @@ class CreateProductActivity : AppCompatActivity() {
         }
     }
     private fun uploadImagesToServer() {
-        for (imageUri in images) {
+        uploadImageAtIndex(0)
+    }
+
+    private fun uploadImageAtIndex(index: Int) {
+        if (index < images.size) {
+            val imageUri = images[index]
             val inputStream = contentResolver.openInputStream(imageUri)
             val file = File(cacheDir, "temp_image.png")
             inputStream?.use { input ->
@@ -122,7 +133,9 @@ class CreateProductActivity : AppCompatActivity() {
                 }
             }
             val requestFile = RequestBody.create(MediaType.parse("image/png"), file)
-            val body = MultipartBody.Part.createFormData("image", generateRandomFileName(), requestFile)
+            val randomName = generateRandomFileName()
+            imagesName.add(randomName)
+            val body = MultipartBody.Part.createFormData("image", randomName, requestFile)
 
             val call = productService.uploadImage(body)
 
@@ -130,10 +143,11 @@ class CreateProductActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.isSuccessful) {
                         val imageUrl = response.body()
-                        // Делайте что-то с URL изображения, например, сохраняйте его в базу данных или отображайте на экране
                         Log.d("ImageUpload", "Изображение загружено: $imageUrl")
                         Toast.makeText(this@CreateProductActivity, "Изображение загружено: $imageUrl", Toast.LENGTH_SHORT).show()
 
+                        // Переход к следующему изображению
+                        uploadImageAtIndex(index + 1)
                     } else {
                         Toast.makeText(this@CreateProductActivity, "Ошибка при загрузке изображения", Toast.LENGTH_SHORT).show()
                     }
@@ -141,9 +155,53 @@ class CreateProductActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Toast.makeText(this@CreateProductActivity, "Ошибка при загрузке изображения: ${t.message}", Toast.LENGTH_SHORT).show()
+                    // Переход к следующему изображению
+                    uploadImageAtIndex(index + 1)
                 }
             })
+        } else {
+            // Все изображения загружены, отправляем запрос на создание продукта
+            sendCreateProductRequest()
         }
+    }
+
+    private fun sendCreateProductRequest() {
+        val nameEditText: EditText = findViewById(R.id.nameEditText)
+        val descriptionEditText: EditText = findViewById(R.id.descriptionEditText)
+        val countEditText: EditText = findViewById(R.id.countEditText)
+        val winterCheckBox: CheckBox = findViewById(R.id.winterCheckBox)
+        val summerCheckBox: CheckBox = findViewById(R.id.summerCheckBox)
+
+        val name = nameEditText.text.toString()
+        val description = descriptionEditText.text.toString()
+        val count = countEditText.text.toString().toIntOrNull() ?: 0
+        val isWinter = winterCheckBox.isChecked
+        val isSummer = summerCheckBox.isChecked
+
+        val jsonUser = "{\"name\": \"$name\", \"description\": \"$description\", \"count\": \"$count\", \"winter\": \"$isWinter\", \"summer\": \"$isSummer\", \"images\": ${imagesName.joinToString(prefix = "[", postfix = "]", transform = { "\"$it\"" })}}"
+
+        val requestBody = RequestBody.create(MediaType.parse("application/json"), jsonUser)
+        val call = productService.createProduct(requestBody)
+
+        call.enqueue(object : Callback<ProductDto> {
+            override fun onResponse(call: Call<ProductDto>, response: Response<ProductDto>) {
+                if (response.isSuccessful) {
+                    // Обработка успешного ответа
+                    // Например, показать сообщение об успешной регистрации
+                    // и переход на другую активность
+                    Toast.makeText(this@CreateProductActivity, "Товар добавлен!", Toast.LENGTH_SHORT).show()
+                } else {
+                    // Обработка неудачного запроса
+                    // Например, показать сообщение об ошибке
+                    Toast.makeText(this@CreateProductActivity, "Неудачный запрос.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ProductDto>, t: Throwable) {
+                // Обработка ошибок сети или других ошибок
+                Toast.makeText(this@CreateProductActivity, "Ошибка сети: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
     private fun generateRandomFileName(): String {
         val uuid = UUID.randomUUID()
