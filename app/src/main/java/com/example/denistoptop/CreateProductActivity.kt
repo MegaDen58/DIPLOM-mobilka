@@ -63,8 +63,8 @@ class CreateProductActivity : AppCompatActivity() {
         }
 
         submitButton.setOnClickListener {
+            imagesName.clear()
             uploadImagesToServer()
-
         }
 
         productService = Retrofit.Builder()
@@ -134,7 +134,6 @@ class CreateProductActivity : AppCompatActivity() {
             }
             val requestFile = RequestBody.create(MediaType.parse("image/png"), file)
             val randomName = generateRandomFileName()
-            imagesName.add(randomName)
             val body = MultipartBody.Part.createFormData("image", randomName, requestFile)
 
             val call = productService.uploadImage(body)
@@ -144,6 +143,7 @@ class CreateProductActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val imageUrl = response.body()
                         Log.d("ImageUpload", "Изображение загружено: $imageUrl")
+                        imagesName.add(randomName)
                         Toast.makeText(this@CreateProductActivity, "Изображение загружено: $imageUrl", Toast.LENGTH_SHORT).show()
 
                         // Переход к следующему изображению
@@ -156,7 +156,7 @@ class CreateProductActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Toast.makeText(this@CreateProductActivity, "Ошибка при загрузке изображения: ${t.message}", Toast.LENGTH_SHORT).show()
                     // Переход к следующему изображению
-                    uploadImageAtIndex(index + 1)
+                    //uploadImageAtIndex(index + 1)
                 }
             })
         } else {
