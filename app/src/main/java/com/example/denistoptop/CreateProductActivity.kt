@@ -34,6 +34,12 @@ import java.util.UUID
 class CreateProductActivity : AppCompatActivity() {
     private lateinit var galleryButton: Button
     private lateinit var submitButton: Button
+    private lateinit var clearButton: Button
+    private lateinit var nameEditText: EditText
+    private lateinit var descriptionEditText: EditText
+    private lateinit var countEditText: EditText
+    private lateinit var winterCheckBox: CheckBox
+    private lateinit var summerCheckBox: CheckBox
     private lateinit var images: MutableList<Uri>
     private lateinit var imagesRecyclerView: RecyclerView
     private lateinit var adapter: ImagesAdapter
@@ -52,6 +58,7 @@ class CreateProductActivity : AppCompatActivity() {
         imagesRecyclerView = findViewById(R.id.imagesRecyclerView)
         galleryButton = findViewById(R.id.galleryButton)
         submitButton = findViewById(R.id.submitButton)
+        clearButton = findViewById(R.id.clearButton)
         images = mutableListOf()
 
         adapter = ImagesAdapter(images)
@@ -65,6 +72,18 @@ class CreateProductActivity : AppCompatActivity() {
         submitButton.setOnClickListener {
             imagesName.clear()
             uploadImagesToServer()
+        }
+
+        clearButton.setOnClickListener {
+            images.clear()
+            adapter.notifyDataSetChanged()
+
+            nameEditText.setText("")
+            descriptionEditText.setText("")
+            countEditText.setText("")
+
+            winterCheckBox.isChecked = false
+            summerCheckBox.isChecked = false
         }
 
         productService = Retrofit.Builder()
@@ -166,11 +185,11 @@ class CreateProductActivity : AppCompatActivity() {
     }
 
     private fun sendCreateProductRequest() {
-        val nameEditText: EditText = findViewById(R.id.nameEditText)
-        val descriptionEditText: EditText = findViewById(R.id.descriptionEditText)
-        val countEditText: EditText = findViewById(R.id.countEditText)
-        val winterCheckBox: CheckBox = findViewById(R.id.winterCheckBox)
-        val summerCheckBox: CheckBox = findViewById(R.id.summerCheckBox)
+        nameEditText = findViewById(R.id.nameEditText)
+        descriptionEditText = findViewById(R.id.descriptionEditText)
+        countEditText = findViewById(R.id.countEditText)
+        winterCheckBox = findViewById(R.id.winterCheckBox)
+        summerCheckBox = findViewById(R.id.summerCheckBox)
 
         val name = nameEditText.text.toString()
         val description = descriptionEditText.text.toString()

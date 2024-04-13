@@ -24,7 +24,7 @@
             android:name=".StartActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".CreateProductActivity"
             android:exported="false"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.DenisTopTop" />
@@ -34,7 +34,7 @@
             android:label="@string/title_activity_registration"
             android:theme="@style/Theme.DenisTopTop" />
         <activity
-            android:name=".CreateProductActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
