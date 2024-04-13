@@ -1,3 +1,5 @@
 package com.example.denistoptop.data
 
-data class MainData(val imageResource: Int, val text: String)
+import java.net.URL
+
+data class MainData(val imageResource: String, val text: String)

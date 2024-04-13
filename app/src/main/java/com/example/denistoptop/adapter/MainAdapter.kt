@@ -1,31 +1,33 @@
 package com.example.denistoptop.adapter
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.denistoptop.R
+import com.bumptech.glide.Glide
 import com.example.denistoptop.data.MainData
+import com.example.denistoptop.databinding.ItemLayoutBinding
 
-class MainAdapter(private val dataList: List<MainData>) : RecyclerView.Adapter<MainAdapter.ViewHolder>()  {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
-        return ViewHolder(view)
+class MainAdapter(private val dataSet: List<MainData>) :
+    RecyclerView.Adapter<MainAdapter.ViewHolder>() {
+
+    class ViewHolder(val binding: ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root)
+
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ItemLayoutBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
+        return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentItem = dataList[position]
-        holder.imageView.setImageResource(currentItem.imageResource)
-        holder.textView.text = currentItem.text
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        val item = dataSet[position]
+        viewHolder.binding.textView.text = item.text
+        if (item.imageResource.isNotEmpty()) {
+            loadImage(item.imageResource, viewHolder.binding.imageView)
+        }
     }
-
-    override fun getItemCount(): Int {
-        return dataList.size
+    private fun loadImage(url: String, imageView: ImageView) {
+        Glide.with(imageView.context)
+            .load(url)
+            .into(imageView)
     }
-
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.imageView)
-        val textView: TextView = itemView.findViewById(R.id.textView)
-    }
+    override fun getItemCount() = dataSet.size
 }
