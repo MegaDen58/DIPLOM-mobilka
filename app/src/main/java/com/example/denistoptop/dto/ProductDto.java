@@ -1,5 +1,6 @@
 package com.example.denistoptop.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.Setter;
 
 @Data
 
-public class ProductDto {
+public class ProductDto implements Serializable {
     private Long id;
     private String name;
     private List<String> images;

@@ -10,6 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface ProductService {
     @POST("products/create")
@@ -21,4 +22,7 @@ interface ProductService {
 
     @GET("/api/products/all")
     fun getAllProducts(): Call<List<ProductDto>>
+
+    @GET("products/product/{imageName}")
+    fun getProductByImage(@Path("imageName") imageName: String): Call<ProductDto>
 }

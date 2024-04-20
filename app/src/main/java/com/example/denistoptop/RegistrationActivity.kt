@@ -54,13 +54,10 @@ class RegistrationActivity : AppCompatActivity() {
             override fun onResponse(call: Call<UserDto>, response: Response<UserDto>) {
                 if (response.isSuccessful) {
                     // Обработка успешного ответа
-                    // Например, показать сообщение об успешной регистрации
-                    // и переход на другую активность
                     Toast.makeText(this@RegistrationActivity, "Регистрация успешна!", Toast.LENGTH_SHORT).show()
 
                 } else {
                     // Обработка неудачного запроса
-                    // Например, показать сообщение об ошибке
                     Toast.makeText(this@RegistrationActivity, "Ошибка при регистрации. Пожалуйста, попробуйте еще раз.", Toast.LENGTH_SHORT).show()
                 }
             }

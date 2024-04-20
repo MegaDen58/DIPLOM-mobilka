@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:titleTextColor="@android:color/white">
+
+        <!-- Ваша кнопка -->
+        <ImageButton
+            android:id="@+id/myButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            android:background="@drawable/backbutton"
+            android:contentDescription="Back Button"
+            android:layout_gravity="start"/>
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- Заголовок с именем продукта -->
+    <TextView
+        android:id="@+id/textProductName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Product Name"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <!-- RecyclerView для отображения изображений -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewImages"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_below="@id/textProductName"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:scrollbars="horizontal" />
+
+    <!-- Описание продукта -->
+    <TextView
+        android:id="@+id/textDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recyclerViewImages"
+        android:layout_marginTop="16dp"
+        android:paddingStart="16dp"
+        android:text="Description: "
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- Количество продукта -->
+    <TextView
+        android:id="@+id/textCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textDescription"
+        android:layout_marginTop="8dp"
+        android:text="Count: "
+        android:paddingStart="16dp"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- Подходит для зимы или зимой и летом -->
+    <TextView
+        android:id="@+id/textSuitableFor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textCount"
+        android:layout_marginTop="8dp"
+        android:paddingStart="16dp"
+        android:text="Suitable for: "
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
