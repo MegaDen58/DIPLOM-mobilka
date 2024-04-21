@@ -52,6 +52,7 @@ class StartActivity : AppCompatActivity() {
                         if (userResponse != null) {
                             // Переход в другое окно
                             // Например:
+                            GlobalVariables.userId = userResponse.id
                             val intent = Intent(this@StartActivity, MainActivity::class.java)
                             startActivity(intent)
                             //Toast.makeText(this@StartActivity, "Всё ок :)", Toast.LENGTH_SHORT).show()
