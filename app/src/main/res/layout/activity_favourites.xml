@@ -4,29 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <EditText
-        android:id="@+id/search"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="17dp"
-        android:layout_marginRight="30dp"
-        android:background="#d2d4d8"
-        android:drawableLeft="@drawable/magnifier"
-        android:hint="Поиск"
-        android:paddingStart="1dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".FavouritesActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="63dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomToolbar"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_layout"
         />
@@ -48,7 +31,7 @@
             android:layout_height="50dp"
             android:scaleType="fitXY"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/noselectedheart"
+            android:background="@drawable/selectedheart"
             android:contentDescription="Button description"
             android:layout_gravity="end" />
 

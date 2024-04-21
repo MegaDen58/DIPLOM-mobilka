@@ -23,6 +23,9 @@ interface ProductService {
     @GET("/api/products/all")
     fun getAllProducts(): Call<List<ProductDto>>
 
+    @GET("products/user/{userId}/favourites")
+    fun getAllProductsByUserId(@Path("userId") userId: Long): Call<List<ProductDto>>
+
     @GET("products/product/{imageName}")
     fun getProductByImage(@Path("imageName") imageName: String): Call<ProductDto>
 }

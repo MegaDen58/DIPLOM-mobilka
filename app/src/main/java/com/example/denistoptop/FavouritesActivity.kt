@@ -1,9 +1,7 @@
 package com.example.denistoptop
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.denistoptop.adapter.MainAdapter
@@ -16,18 +14,15 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MainActivity : AppCompatActivity() {
-
+class FavouritesActivity : AppCompatActivity() {
     private lateinit var retrofit: Retrofit
     private lateinit var productService: ProductService
-    private lateinit var favourites: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_favourites)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        favourites = findViewById(R.id.favourites)
 
         retrofit = Retrofit.Builder()
             .baseUrl("http://94.228.112.46:8080/api/")
@@ -37,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         productService = retrofit.create(ProductService::class.java)
 
         // Получение списка продуктов
-        productService.getAllProducts().enqueue(object : Callback<List<ProductDto>> {
+        productService.getAllProductsByUserId(GlobalVariables.userId).enqueue(object : Callback<List<ProductDto>> {
             override fun onResponse(call: Call<List<ProductDto>>, response: Response<List<ProductDto>>) {
                 if (response.isSuccessful) {
                     val products = response.body()
@@ -47,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                     } ?: emptyList()
 
                     recyclerView.adapter = MainAdapter(myDataset)
-                    recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+                    recyclerView.layoutManager = LinearLayoutManager(this@FavouritesActivity)
                 } else {
                     // Обработка неудачного запроса
                 }
@@ -57,11 +52,5 @@ class MainActivity : AppCompatActivity() {
                 // Обработка ошибок сети или других ошибок
             }
         })
-
-        favourites.setOnClickListener {
-            val intent = Intent(this@MainActivity, FavouritesActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(0, 0)
-        }
     }
 }
