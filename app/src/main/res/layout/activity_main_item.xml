@@ -68,28 +68,30 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <!-- Количество продукта -->
-    <TextView
-        android:id="@+id/textCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textDescription"
-        android:layout_marginTop="8dp"
-        android:text="Count: "
-        android:paddingStart="16dp"
-        android:textSize="18sp"
-        android:textStyle="bold" />
 
     <!-- Подходит для зимы или зимой и летом -->
     <TextView
         android:id="@+id/textSuitableFor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textCount"
+        android:layout_below="@id/textDescription"
         android:layout_marginTop="8dp"
         android:paddingStart="16dp"
         android:text="Suitable for: "
         android:textSize="18sp"
         android:textStyle="bold" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/cartButton"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_below="@id/textSuitableFor"
+        android:background="@drawable/register_button"
+        android:text="В корзину"
+        android:textColor="#FFFFFF"
+        android:textSize="30dp"/>
 
 </RelativeLayout>

@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var retrofit: Retrofit
     private lateinit var productService: ProductService
     private lateinit var favourites: ImageButton
+    private lateinit var cart: ImageButton
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         favourites = findViewById(R.id.favourites)
+        cart = findViewById(R.id.cart)
 
         retrofit = Retrofit.Builder()
             .baseUrl("http://94.228.112.46:8080/api/")
@@ -52,7 +55,6 @@ class MainActivity : AppCompatActivity() {
                     // Обработка неудачного запроса
                 }
             }
-
             override fun onFailure(call: Call<List<ProductDto>>, t: Throwable) {
                 // Обработка ошибок сети или других ошибок
             }
@@ -60,6 +62,12 @@ class MainActivity : AppCompatActivity() {
 
         favourites.setOnClickListener {
             val intent = Intent(this@MainActivity, FavouritesActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+        }
+
+        cart.setOnClickListener {
+            val intent = Intent(this@MainActivity, CartActivity::class.java)
             startActivity(intent)
             overridePendingTransition(0, 0)
         }

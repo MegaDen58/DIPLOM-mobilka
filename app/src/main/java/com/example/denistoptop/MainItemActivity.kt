@@ -3,6 +3,7 @@ package com.example.denistoptop
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -25,11 +26,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainItemActivity : AppCompatActivity() {
 
     private lateinit var textProductName: TextView
-    private lateinit var textCount: TextView
     private lateinit var textDescription: TextView
     private lateinit var textSuitableFor: TextView
     private lateinit var recyclerViewImages: RecyclerView
     private lateinit var toolbar: Toolbar
+    private lateinit var cartButton: Button
     var isFavourite = false
 
     private lateinit var retrofit: Retrofit
@@ -48,10 +49,11 @@ class MainItemActivity : AppCompatActivity() {
         userService = retrofit.create(UserService::class.java)
 
         textProductName = findViewById(R.id.textProductName)
-        textCount = findViewById(R.id.textCount)
         textSuitableFor = findViewById(R.id.textSuitableFor)
         recyclerViewImages = findViewById(R.id.recyclerViewImages)
         textDescription = findViewById(R.id.textDescription)
+        cartButton = findViewById(R.id.cartButton)
+
         toolbar = findViewById(R.id.toolbar)
 
         val product: ProductDto? = intent.getSerializableExtra("product") as? ProductDto
@@ -159,12 +161,14 @@ class MainItemActivity : AppCompatActivity() {
                 }
             })
         }
+
+        cartButton.setOnClickListener {
+            product?.let { it1 -> GlobalVariables.cart.add(it1) }
+        }
+
         // Установка названия продукта
         textProductName.text = product?.name ?: "ERROR"
         textDescription.setText("Описание: " + product?.description)
-
-        // Установка количества
-        textCount.text = "Количество: ${product?.count ?: 0}"
 
         // Установка подходит для
         val suitableForText = when {

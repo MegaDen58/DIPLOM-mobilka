@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/itemImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/tent" />
+
+    <TextView
+        android:id="@+id/itemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/itemImage"
+        android:layout_toStartOf="@+id/deleteIcon"
+        android:padding="10dp"
+        android:text="Текст элемента" />
+
+    <ImageView
+        android:id="@+id/deleteIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/minus"
+        android:clickable="true"
+        android:onClick="onDeleteClick" />
+
+</RelativeLayout>
