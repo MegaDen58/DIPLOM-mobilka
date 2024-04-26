@@ -9,14 +9,16 @@ import lombok.Getter;
 public class UserDto {
     Long id;
     String login;
-
     String password;
     String email;
-
     List<Integer> favourites;
+    public Integer balance;
 
     public Long getId() {
         return id;
+    }
+    public Integer getBalance() {
+        return balance;
     }
 
     public String getLogin() {
@@ -49,6 +51,9 @@ public class UserDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public void setBalance(Integer balance) {
+        this.balance = balance;
     }
 
     public void setFavourites(List<Integer> favourites) {

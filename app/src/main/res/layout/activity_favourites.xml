@@ -24,7 +24,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
 
-        <!-- Кнопка в тулбаре -->
         <ImageButton
             android:id="@+id/favourites"
             android:layout_width="50dp"
@@ -32,6 +31,17 @@
             android:scaleType="fitXY"
             android:layout_marginEnd="10dp"
             android:background="@drawable/selectedheart"
+            android:contentDescription="Button description"
+            android:layout_gravity="end" />
+
+        <ImageButton
+            android:id="@+id/cart"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/cart"
+            app:layout_constraintBottom_toTopOf="@+id/favourites"
             android:contentDescription="Button description"
             android:layout_gravity="end" />
 

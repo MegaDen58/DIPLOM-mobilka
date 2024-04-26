@@ -1,7 +1,9 @@
 package com.example.denistoptop
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.denistoptop.adapter.MainAdapter
@@ -23,6 +25,7 @@ class FavouritesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_favourites)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+        var cartButton: ImageButton = findViewById(R.id.cart)
 
         retrofit = Retrofit.Builder()
             .baseUrl("http://94.228.112.46:8080/api/")
@@ -52,5 +55,11 @@ class FavouritesActivity : AppCompatActivity() {
                 // Обработка ошибок сети или других ошибок
             }
         })
+
+        cartButton.setOnClickListener{
+            val intent = Intent(this@FavouritesActivity, CartActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+        }
     }
 }

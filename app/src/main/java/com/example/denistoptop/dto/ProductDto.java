@@ -17,11 +17,18 @@ public class ProductDto implements Serializable {
 
     private String description;
     private int count;
+    private int price;
     private boolean winter;
     private boolean summer;
 
     public void setId(Long id) {
         this.id = id;
+    }
+    public void setPrice(int price) {
+        this.price = price;
+    }
+    public int getPrice(){
+        return price;
     }
 
     public void setName(String name) {
@@ -77,13 +84,14 @@ public class ProductDto implements Serializable {
     }
 
     // Создаем конструктор, который принимает все поля класса
-    public ProductDto(String name, String description, int count, boolean winter, boolean summer, List<String> images) {
+    public ProductDto(String name, String description, int count, boolean winter, boolean summer, List<String> images, int price) {
         this.name = name;
         this.description = description;
         this.count = count;
         this.winter = winter;
         this.summer = summer;
         this.images = images;
+        this.price = price;
     }
     public ProductDto(){
 

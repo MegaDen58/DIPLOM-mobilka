@@ -4,14 +4,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottomButton"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/cart_list"
-        android:layout_marginBottom="16dp" />
+        android:layout_above="@id/bottomToolbar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/cart_list"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:id="@+id/startDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Дата начала аренды"
+                android:textSize="18sp"
+                android:layout_below="@+id/recyclerView"
+                android:layout_marginTop="10dp"
+                android:textColor="@android:color/black"
+                android:layout_gravity="center_horizontal"/>
+
+            <DatePicker
+                android:id="@+id/startDatePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"
+                android:layout_below="@+id/startDateText"
+                android:spinnersShown="true" />
+
+            <TextView
+                android:id="@+id/endDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Дата конца аренды"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:layout_below="@+id/startDatePicker"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal"/>
+
+            <DatePicker
+                android:id="@+id/endDatePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/endDateText"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"
+                android:spinnersShown="true" />
+
+        </RelativeLayout>
+
+    </ScrollView>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/bottomToolbar"
@@ -44,12 +98,11 @@
     </androidx.appcompat.widget.Toolbar>
 
     <Button
-        android:id="@+id/bottomButton"
+        android:id="@+id/rentButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/bottomToolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="Нажми меня" />
-
+        android:text="Арендовать" />
 </RelativeLayout>

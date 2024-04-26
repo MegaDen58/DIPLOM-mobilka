@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.denistoptop.GlobalVariables
 import com.example.denistoptop.R
 
 class Item(val name: String, val imageUrl: String)
@@ -38,6 +39,8 @@ class CartAdapter(private val itemList: MutableList<Item>) : RecyclerView.Adapte
         holder.deleteIcon.setOnClickListener {
             // Удаление элемента из списка и обновление RecyclerView
             itemList.removeAt(holder.adapterPosition)
+            GlobalVariables.allCartPrice -= GlobalVariables.cart.get(holder.adapterPosition).price
+            GlobalVariables.cart.removeAt(holder.adapterPosition)
             notifyItemRemoved(holder.adapterPosition)
 
             // Проверка, если список пуст, обновить RecyclerView
