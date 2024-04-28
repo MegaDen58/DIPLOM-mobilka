@@ -61,6 +61,7 @@
                 android:layout_below="@+id/endDateText"
                 android:calendarViewShown="false"
                 android:datePickerMode="spinner"
+                android:layout_marginBottom="26dp"
                 android:spinnersShown="true" />
 
         </RelativeLayout>

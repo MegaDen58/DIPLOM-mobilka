@@ -2,6 +2,7 @@ package com.example.denistoptop.service
 import com.example.denistoptop.dto.UserDto
 import okhttp3.RequestBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -18,5 +19,5 @@ interface UserService {
     fun addFavourite(@Body request: RequestBody): Call<UserDto>
     @POST("users/removeFavourite")
     fun removeFavourite(@Body request: RequestBody): Call<UserDto>
-
-}
+    @POST("users/setBalance")
+    fun setUserBalance(@Body request: RequestBody): Call<UserDto>}
