@@ -26,42 +26,16 @@
         android:layout_height="match_parent"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="63dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomToolbar"
+        app:layout_constraintBottom_toTopOf="@+id/toolbar_layout"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_layout"
         />
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/bottomToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+    <include
+        layout="@layout/toolbar_layout"
+        android:id="@+id/toolbar_layout"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
-
-        <ImageButton
-            android:id="@+id/favourites"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:scaleType="fitXY"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/noselectedheart"
-            android:contentDescription="Button description"
-            android:layout_gravity="end" />
-
-        <ImageButton
-            android:id="@+id/cart"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:scaleType="fitXY"
-            android:layout_marginEnd="50dp"
-            android:background="@drawable/cart"
-            app:layout_constraintBottom_toTopOf="@+id/favourites"
-            android:contentDescription="Button description"
-            android:layout_gravity="end" />
-
-    </androidx.appcompat.widget.Toolbar>
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.denistoptop.adapter.MainAdapter
@@ -20,18 +21,38 @@ import retrofit2.converter.gson.GsonConverterFactory
 class FavouritesActivity : AppCompatActivity() {
     private lateinit var retrofit: Retrofit
     private lateinit var productService: ProductService
+    private lateinit var favouritesButton: ImageButton
+    private lateinit var burgerButton: ImageButton
+    private lateinit var mainButton: ImageButton
+    private lateinit var cartButton: ImageButton
+    private lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favourites)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        var cartButton: ImageButton = findViewById(R.id.cart)
 
         retrofit = Retrofit.Builder()
             .baseUrl("http://94.228.112.46:8080/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
+        toolbar = findViewById<Toolbar>(R.id.toolbar_layout)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        favouritesButton = findViewById(R.id.favourites)
+        burgerButton = findViewById(R.id.burgerMenu)
+        mainButton = findViewById(R.id.main)
+        cartButton = findViewById(R.id.cart)
+
+        val toolbarClickListener = ToolbarButtonClickListener(this, toolbar, this)
+        favouritesButton.setOnClickListener(toolbarClickListener)
+        favouritesButton.setBackgroundResource(R.drawable.selectedheart)
+        burgerButton.setOnClickListener(toolbarClickListener)
+        mainButton.setOnClickListener(toolbarClickListener)
+        cartButton.setOnClickListener(toolbarClickListener)
+
 
         productService = retrofit.create(ProductService::class.java)
 
@@ -58,10 +79,5 @@ class FavouritesActivity : AppCompatActivity() {
             }
         })
 
-        cartButton.setOnClickListener{
-            val intent = Intent(this@FavouritesActivity, CartActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(0, 0)
-        }
     }
 }

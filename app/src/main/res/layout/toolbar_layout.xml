@@ -24,9 +24,20 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:scaleType="fitXY"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="40dp"
         android:background="@drawable/cart"
         app:layout_constraintBottom_toTopOf="@+id/favourites"
+        android:contentDescription="Button description"
+        android:layout_gravity="end" />
+
+    <ImageButton
+        android:id="@+id/main"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitXY"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/main"
+        app:layout_constraintBottom_toTopOf="@+id/cart"
         android:contentDescription="Button description"
         android:layout_gravity="end" />
 

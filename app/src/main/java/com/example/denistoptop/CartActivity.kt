@@ -45,6 +45,8 @@ class CartActivity : AppCompatActivity() {
     private lateinit var rentButton: Button
     private lateinit var favouritesButton: ImageButton
     private lateinit var burgerButton: ImageButton
+    private lateinit var cartButton: ImageButton
+    private lateinit var mainButton: ImageButton
     private lateinit var toolbar: Toolbar
 
     private lateinit var retrofit: Retrofit
@@ -60,15 +62,23 @@ class CartActivity : AppCompatActivity() {
 
         val startDate: LocalDate = LocalDate.now()
         val endDate: LocalDate = LocalDate.now()
-        toolbar = findViewById<Toolbar>(R.id.bottomToolbar)
+        toolbar = findViewById<Toolbar>(R.id.toolbar_layout)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
+        mainButton = findViewById(R.id.main)
         startDatePicker = findViewById(R.id.startDatePicker)
         endDatePicker = findViewById(R.id.endDatePicker)
         rentButton = findViewById(R.id.rentButton)
         favouritesButton = findViewById(R.id.favourites)
-        burgerButton = findViewById(R.id.burgerMenu);
+        burgerButton = findViewById(R.id.burgerMenu)
+        cartButton = findViewById(R.id.cart)
+        val toolbarClickListener = ToolbarButtonClickListener(this, toolbar, this)
+        favouritesButton.setOnClickListener(toolbarClickListener)
+        favouritesButton.setBackgroundResource(R.drawable.noselectedheart)
+        cartButton.setBackgroundResource(R.drawable.selectedcart)
+        burgerButton.setOnClickListener(toolbarClickListener)
+        mainButton.setOnClickListener(toolbarClickListener)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         val rentButton: Button = findViewById(R.id.rentButton)
@@ -85,12 +95,11 @@ class CartActivity : AppCompatActivity() {
         // Создание списка предметов
         val itemList = mutableListOf<Item>()
 
-        for(product in GlobalVariables.cart){
+        for (product in GlobalVariables.cart) {
             GlobalVariables.allCartPrice += product.price
             val imageUrl = if (product.images.isNotEmpty()) {
                 "http://94.228.112.46:8080/api/products/image/${product.images[0]}"
-            }
-            else {
+            } else {
                 "" // Пустая строка, если изображение отсутствует
             }
             itemList.add(Item(product.name, imageUrl))
@@ -119,13 +128,14 @@ class CartActivity : AppCompatActivity() {
             val rentPrice = differenceInDays * GlobalVariables.allCartPrice
 //            val message = "Арендовать ($rentPrice рублей)"
 //            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-            if(GlobalVariables.user!!.balance >= rentPrice){
+            if (GlobalVariables.user!!.balance >= rentPrice) {
                 var newBalance = GlobalVariables.user!!.balance - rentPrice
                 var userId = GlobalVariables.userId
 
                 val jsonString = "{\"userId\": $userId, \"balance\": $newBalance}"
 
-                val requestBody = RequestBody.create(MediaType.parse("application/json"), jsonString)
+                val requestBody =
+                    RequestBody.create(MediaType.parse("application/json"), jsonString)
 
                 val call = userService.setUserBalance(requestBody)
                 call.enqueue(object : Callback<UserDto> {
@@ -135,13 +145,24 @@ class CartActivity : AppCompatActivity() {
                             val startYear = startDatePicker.year
                             val startMonth = startDatePicker.month + 1
                             val startDayOfMonth = startDatePicker.dayOfMonth
-                            val selectedStartDate = "${startYear}-${String.format("%02d", startMonth)}-${String.format("%02d", startDayOfMonth)}"
+                            val selectedStartDate = "${startYear}-${
+                                String.format(
+                                    "%02d",
+                                    startMonth
+                                )
+                            }-${String.format("%02d", startDayOfMonth)}"
 
 
                             val endYear = endDatePicker.year
-                            val endMonth = endDatePicker.month + 1 // Увеличиваем на 1, так как месяцы начинаются с 0
+                            val endMonth =
+                                endDatePicker.month + 1 // Увеличиваем на 1, так как месяцы начинаются с 0
                             val endDayOfMonth = endDatePicker.dayOfMonth
-                            val selectedEndDate = "${endYear}-${String.format("%02d", endMonth)}-${String.format("%02d", endDayOfMonth)}"
+                            val selectedEndDate = "${endYear}-${
+                                String.format(
+                                    "%02d",
+                                    endMonth
+                                )
+                            }-${String.format("%02d", endDayOfMonth)}"
 
                             val productList = arrayListOf<Long>()
 
@@ -149,54 +170,74 @@ class CartActivity : AppCompatActivity() {
                                 productList.add(product.id)
                             }
 
-                            val orderJsonString = "{\"start_date\": \"$selectedStartDate\", \"end_date\": \"$selectedEndDate\", " +
-                                    "\"price\": ${GlobalVariables.allCartPrice}, \"user_id\": ${GlobalVariables.userId}, " +
-                                    "\"type\": \"Оплачен\", \"items\": ${JSONArray(productList)}}"
+                            val orderJsonString =
+                                "{\"start_date\": \"$selectedStartDate\", \"end_date\": \"$selectedEndDate\", " +
+                                        "\"price\": ${GlobalVariables.allCartPrice}, \"user_id\": ${GlobalVariables.userId}, " +
+                                        "\"type\": \"Оплачен\", \"items\": ${JSONArray(productList)}}"
 
-                            val requestOrderBody = RequestBody.create(MediaType.parse("application/json"), orderJsonString)
-                            orderService.createOrder(requestOrderBody).enqueue(object : Callback<OrderDto> {
-                                override fun onResponse(call: Call<OrderDto>, response: Response<OrderDto>) {
-                                    Log.w("TAGI", orderJsonString)
-                                    if (response.isSuccessful) {
-                                        Toast.makeText(this@CartActivity, "Арендовано", Toast.LENGTH_SHORT).show()
-                                    } else {
-                                        Toast.makeText(this@CartActivity, "пздц1", Toast.LENGTH_SHORT).show()
+                            val requestOrderBody = RequestBody.create(
+                                MediaType.parse("application/json"),
+                                orderJsonString
+                            )
+                            orderService.createOrder(requestOrderBody)
+                                .enqueue(object : Callback<OrderDto> {
+                                    override fun onResponse(
+                                        call: Call<OrderDto>,
+                                        response: Response<OrderDto>
+                                    ) {
+                                        Log.w("TAGI", orderJsonString)
+                                        if (response.isSuccessful) {
+                                            Toast.makeText(
+                                                this@CartActivity,
+                                                "Арендовано",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        } else {
+                                            Toast.makeText(
+                                                this@CartActivity,
+                                                "пздц1",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<OrderDto>, t: Throwable) {
+                                        Toast.makeText(
+                                            this@CartActivity,
+                                            "пздц2",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
 
                                     }
-                                }
-                                override fun onFailure(call: Call<OrderDto>, t: Throwable) {
-                                    Toast.makeText(this@CartActivity, "пздц2", Toast.LENGTH_SHORT).show()
-
-                                }
-                            })
+                                })
                         } else {
-                            Toast.makeText(this@CartActivity, "Ошибка при аренде", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@CartActivity,
+                                "Ошибка при аренде",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
 
                     override fun onFailure(call: Call<UserDto>, t: Throwable) {
                         Log.e("ERROR", "Ошибка при выполнении запроса: ${t.message}")
-                        Toast.makeText(this@CartActivity, "Ошибка при выполнении запроса", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@CartActivity,
+                            "Ошибка при выполнении запроса",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 })
 
 
-
+            } else {
+                Toast.makeText(
+                    this@CartActivity,
+                    "На балансе недостаточно средств",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-            else{
-                Toast.makeText(this@CartActivity, "На балансе недостаточно средств", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        favouritesButton.setOnClickListener{
-            val intent = Intent(this@CartActivity, FavouritesActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(0, 0)
-        }
-
-        burgerButton.setOnClickListener {
-            // Отображение выдвижного меню
-            showPopupMenu(it)
         }
     }
 
@@ -223,39 +264,4 @@ class CartActivity : AppCompatActivity() {
         rentButton.text = buttonText
     }
 
-
-    // Метод для отображения выдвижного меню
-    private fun showPopupMenu(view: View) {
-        // Создание layout для меню
-        val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val popupView = inflater.inflate(R.layout.popup_menu_layout, null)
-
-        // Инициализация элементов всплывающего меню
-        val balanceText = popupView.findViewById<TextView>(R.id.balanceText)
-        val replenishButton = popupView.findViewById<Button>(R.id.replenishButton)
-        val catalogButton = popupView.findViewById<Button>(R.id.catalogButton)
-        val cartButton = popupView.findViewById<Button>(R.id.cartButton)
-
-        balanceText.setText("Баланс: ${GlobalVariables.user?.balance}₽")
-
-        // Задание действий для кнопок
-        replenishButton.setOnClickListener {
-            // Действие при нажатии на кнопку пополнения баланса
-        }
-        catalogButton.setOnClickListener {
-            // Действие при нажатии на кнопку "Каталог"
-        }
-        cartButton.setOnClickListener {
-            // Действие при нажатии на кнопку "Корзина"
-        }
-
-        // Создание всплывающего окна
-        val width = ViewGroup.LayoutParams.WRAP_CONTENT
-        val height = ViewGroup.LayoutParams.MATCH_PARENT
-        val focusable = true
-        val popupWindow = PopupWindow(popupView, width, height, focusable)
-
-        // Отображение всплывающего окна в указанной позиции
-        popupWindow.showAtLocation(view, Gravity.TOP or Gravity.START, 0, toolbar.height)
-    }
 }
