@@ -4,10 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        layout="@layout/toolbar_layout"
+        android:id="@+id/toolbar_layout" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottomToolbar">
+        android:layout_above="@id/toolbar_layout">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -68,41 +72,12 @@
 
     </ScrollView>
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/bottomToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:layout_alignParentBottom="true"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
-
-        <ImageButton
-            android:id="@+id/favourites"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:scaleType="fitXY"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/noselectedheart"
-            android:contentDescription="Button description"
-            android:layout_gravity="end" />
-
-        <ImageButton
-            android:id="@+id/cart"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:scaleType="fitXY"
-            android:layout_marginEnd="50dp"
-            android:background="@drawable/selectedcart"
-            app:layout_constraintBottom_toTopOf="@+id/favourites"
-            android:contentDescription="Button description"
-            android:layout_gravity="end" />
-    </androidx.appcompat.widget.Toolbar>
 
     <Button
         android:id="@+id/rentButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/bottomToolbar"
+        android:layout_above="@id/toolbar_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:text="Арендовать" />

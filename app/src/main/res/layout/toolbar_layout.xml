@@ -1,0 +1,43 @@
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottomToolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+    android:layout_alignParentBottom="true"
+    android:layout_gravity="bottom"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
+
+    <ImageButton
+        android:id="@+id/favourites"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitXY"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/noselectedheart"
+        android:contentDescription="Button description"
+        android:layout_gravity="end" />
+
+    <ImageButton
+        android:id="@+id/cart"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitXY"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/cart"
+        app:layout_constraintBottom_toTopOf="@+id/favourites"
+        android:contentDescription="Button description"
+        android:layout_gravity="end" />
+
+    <ImageButton
+        android:id="@+id/burgerMenu"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitXY"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/burger"
+        android:contentDescription="Menu"
+        android:layout_gravity="start"/>
+
+</androidx.appcompat.widget.Toolbar>

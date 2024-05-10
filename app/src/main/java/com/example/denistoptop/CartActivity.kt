@@ -1,21 +1,28 @@
 package com.example.denistoptop
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.ImageButton
+import android.widget.PopupWindow
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
 import com.example.denistoptop.GlobalVariables.Companion.cart
 import com.example.denistoptop.adapter.CartAdapter
 import com.example.denistoptop.adapter.Item
 import com.example.denistoptop.dto.OrderDto
-import com.example.denistoptop.dto.ProductDto
 import com.example.denistoptop.dto.UserDto
 import com.example.denistoptop.service.OrderService
 import com.example.denistoptop.service.ProductService
@@ -37,6 +44,8 @@ class CartActivity : AppCompatActivity() {
     private lateinit var endDatePicker: DatePicker
     private lateinit var rentButton: Button
     private lateinit var favouritesButton: ImageButton
+    private lateinit var burgerButton: ImageButton
+    private lateinit var toolbar: Toolbar
 
     private lateinit var retrofit: Retrofit
     private lateinit var productService: ProductService
@@ -51,11 +60,15 @@ class CartActivity : AppCompatActivity() {
 
         val startDate: LocalDate = LocalDate.now()
         val endDate: LocalDate = LocalDate.now()
+        toolbar = findViewById<Toolbar>(R.id.bottomToolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         startDatePicker = findViewById(R.id.startDatePicker)
         endDatePicker = findViewById(R.id.endDatePicker)
         rentButton = findViewById(R.id.rentButton)
         favouritesButton = findViewById(R.id.favourites)
+        burgerButton = findViewById(R.id.burgerMenu);
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         val rentButton: Button = findViewById(R.id.rentButton)
@@ -180,6 +193,11 @@ class CartActivity : AppCompatActivity() {
             startActivity(intent)
             overridePendingTransition(0, 0)
         }
+
+        burgerButton.setOnClickListener {
+            // Отображение выдвижного меню
+            showPopupMenu(it)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -203,5 +221,41 @@ class CartActivity : AppCompatActivity() {
         val rentPrice = differenceInDays * GlobalVariables.allCartPrice
         val buttonText = "Арендовать ($rentPrice рублей)"
         rentButton.text = buttonText
+    }
+
+
+    // Метод для отображения выдвижного меню
+    private fun showPopupMenu(view: View) {
+        // Создание layout для меню
+        val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val popupView = inflater.inflate(R.layout.popup_menu_layout, null)
+
+        // Инициализация элементов всплывающего меню
+        val balanceText = popupView.findViewById<TextView>(R.id.balanceText)
+        val replenishButton = popupView.findViewById<Button>(R.id.replenishButton)
+        val catalogButton = popupView.findViewById<Button>(R.id.catalogButton)
+        val cartButton = popupView.findViewById<Button>(R.id.cartButton)
+
+        balanceText.setText("Баланс: ${GlobalVariables.user?.balance}₽")
+
+        // Задание действий для кнопок
+        replenishButton.setOnClickListener {
+            // Действие при нажатии на кнопку пополнения баланса
+        }
+        catalogButton.setOnClickListener {
+            // Действие при нажатии на кнопку "Каталог"
+        }
+        cartButton.setOnClickListener {
+            // Действие при нажатии на кнопку "Корзина"
+        }
+
+        // Создание всплывающего окна
+        val width = ViewGroup.LayoutParams.WRAP_CONTENT
+        val height = ViewGroup.LayoutParams.MATCH_PARENT
+        val focusable = true
+        val popupWindow = PopupWindow(popupView, width, height, focusable)
+
+        // Отображение всплывающего окна в указанной позиции
+        popupWindow.showAtLocation(view, Gravity.TOP or Gravity.START, 0, toolbar.height)
     }
 }

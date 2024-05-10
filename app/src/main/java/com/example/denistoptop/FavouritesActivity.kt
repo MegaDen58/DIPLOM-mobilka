@@ -3,6 +3,7 @@ package com.example.denistoptop
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,13 +47,14 @@ class FavouritesActivity : AppCompatActivity() {
 
                     recyclerView.adapter = MainAdapter(myDataset)
                     recyclerView.layoutManager = LinearLayoutManager(this@FavouritesActivity)
+                    Log.w("GOOD", "GOOD")
                 } else {
-                    // Обработка неудачного запроса
+                    Log.w("BAD1", "BAD1")
                 }
             }
 
             override fun onFailure(call: Call<List<ProductDto>>, t: Throwable) {
-                // Обработка ошибок сети или других ошибок
+                Log.w("BAD2", "BAD2")
             }
         })
 
