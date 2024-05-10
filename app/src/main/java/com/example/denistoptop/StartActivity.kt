@@ -1,5 +1,6 @@
 package com.example.denistoptop
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.example.denistoptop.dto.UserDto
 import com.example.denistoptop.service.UserService
+import com.google.gson.Gson
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -23,6 +25,18 @@ class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
+
+        val user = getUserInfo(this)
+        if (user != null) {
+            // Идентификатор пользователя доступен, переход к MainActivity
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish() // Закрыть текущую активити, чтобы пользователь не мог вернуться к StartActivity
+        } else {
+            // Идентификатор пользователя не доступен, оставляем StartActivity
+            setContentView(R.layout.activity_start)
+            // Далее ваша текущая логика
+        }
 
         retrofit = Retrofit.Builder()
             .baseUrl("http://94.228.112.46:8080/api/")
@@ -54,6 +68,7 @@ class StartActivity : AppCompatActivity() {
                             // Например:
                             GlobalVariables.userId = userResponse.id
                             GlobalVariables.user = userResponse
+                            saveUserInfo(this@StartActivity, GlobalVariables.user)
                             val intent = Intent(this@StartActivity, MainActivity::class.java)
                             startActivity(intent)
                             //Toast.makeText(this@StartActivity, "Всё ок :)", Toast.LENGTH_SHORT).show()
@@ -80,5 +95,20 @@ class StartActivity : AppCompatActivity() {
             val intent = Intent(this, RegistrationActivity::class.java)
             startActivity(intent)
         }
+    }
+    fun saveUserInfo(context: Context, user: UserDto?) {
+        val sharedPreferences = context.getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val gson = Gson()
+        val userJson = gson.toJson(user)
+        editor.putString("USER_INFO", userJson)
+        editor.apply()
+    }
+
+    fun getUserInfo(context: Context): UserDto? {
+        val sharedPreferences = context.getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE)
+        val gson = Gson()
+        val userJson = sharedPreferences.getString("USER_INFO", null)
+        return gson.fromJson(userJson, UserDto::class.java)
     }
 }
