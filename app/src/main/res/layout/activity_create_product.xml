@@ -19,11 +19,34 @@
         android:padding="16dp"/>
 
     <EditText
-        android:id="@+id/countEditText"
+        android:id="@+id/colorEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/descriptionEditText"
-        android:hint="Count"
+        android:hint="Color"
+        android:padding="16dp"/>
+
+    <EditText
+        android:id="@+id/materialEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/colorEditText"
+        android:hint="Material"
+        android:padding="16dp"/>
+
+    <EditText
+        android:id="@+id/sizeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/materialEditText"
+        android:hint="Size"
+        android:padding="16dp"/>
+    <EditText
+        android:id="@+id/priceEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sizeEditText"
+        android:hint="Price"
         android:inputType="number"
         android:padding="16dp"/>
 
@@ -31,7 +54,7 @@
         android:id="@+id/winterCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/countEditText"
+        android:layout_below="@id/priceEditText"
         android:layout_marginTop="16dp"
         android:text="Winter"
         android:padding="16dp"/>
@@ -74,6 +97,4 @@
         android:layout_below="@id/submitButton"
         android:text="Clear"
         android:padding="16dp"/>
-
-
 </RelativeLayout>

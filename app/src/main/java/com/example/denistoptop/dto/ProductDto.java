@@ -16,10 +16,36 @@ public class ProductDto implements Serializable {
     private List<String> images;
 
     private String description;
-    private int count;
     private int price;
     private boolean winter;
     private boolean summer;
+    private String color;
+    private String material;
+    private String size;
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setMaterial(String material) {
+        this.material = material;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public String getMaterial() {
+        return material;
+    }
+
+    public String getSize() {
+        return size;
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -43,9 +69,6 @@ public class ProductDto implements Serializable {
         this.description = description;
     }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
 
     public void setWinter(boolean winter) {
         this.winter = winter;
@@ -71,9 +94,6 @@ public class ProductDto implements Serializable {
         return description;
     }
 
-    public int getCount() {
-        return count;
-    }
 
     public boolean isWinter() {
         return winter;
@@ -84,10 +104,12 @@ public class ProductDto implements Serializable {
     }
 
     // Создаем конструктор, который принимает все поля класса
-    public ProductDto(String name, String description, int count, boolean winter, boolean summer, List<String> images, int price) {
+    public ProductDto(String name, String description, int count, boolean winter, boolean summer, List<String> images, int price, String material, String size, String color) {
         this.name = name;
         this.description = description;
-        this.count = count;
+        this.material = material;
+        this.color = color;
+        this.size = size;
         this.winter = winter;
         this.summer = summer;
         this.images = images;

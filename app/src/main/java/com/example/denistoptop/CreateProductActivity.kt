@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.denistoptop.adapter.ImagesAdapter
 import com.example.denistoptop.dto.ProductDto
-import com.example.denistoptop.dto.UserDto
 import com.example.denistoptop.service.ProductService
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -37,7 +36,10 @@ class CreateProductActivity : AppCompatActivity() {
     private lateinit var clearButton: Button
     private lateinit var nameEditText: EditText
     private lateinit var descriptionEditText: EditText
-    private lateinit var countEditText: EditText
+    private lateinit var colorEditText: EditText
+    private lateinit var sizeEditText: EditText
+    private lateinit var priceEditText: EditText
+    private lateinit var materialEditText: EditText
     private lateinit var winterCheckBox: CheckBox
     private lateinit var summerCheckBox: CheckBox
     private lateinit var images: MutableList<Uri>
@@ -61,6 +63,15 @@ class CreateProductActivity : AppCompatActivity() {
         clearButton = findViewById(R.id.clearButton)
         images = mutableListOf()
 
+        nameEditText = findViewById(R.id.nameEditText)
+        descriptionEditText = findViewById(R.id.descriptionEditText)
+        colorEditText = findViewById(R.id.colorEditText)
+        sizeEditText = findViewById(R.id.sizeEditText)
+        priceEditText = findViewById(R.id.priceEditText)
+        materialEditText = findViewById(R.id.materialEditText)
+        winterCheckBox = findViewById(R.id.winterCheckBox)
+        summerCheckBox = findViewById(R.id.summerCheckBox)
+
         adapter = ImagesAdapter(images)
         imagesRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         imagesRecyclerView.adapter = adapter
@@ -80,7 +91,10 @@ class CreateProductActivity : AppCompatActivity() {
 
             nameEditText.setText("")
             descriptionEditText.setText("")
-            countEditText.setText("")
+            colorEditText.setText("")
+            sizeEditText.setText("")
+            priceEditText.setText("")
+            materialEditText.setText("")
 
             winterCheckBox.isChecked = false
             summerCheckBox.isChecked = false
@@ -185,22 +199,34 @@ class CreateProductActivity : AppCompatActivity() {
     }
 
     private fun sendCreateProductRequest() {
-        nameEditText = findViewById(R.id.nameEditText)
-        descriptionEditText = findViewById(R.id.descriptionEditText)
-        countEditText = findViewById(R.id.countEditText)
-        winterCheckBox = findViewById(R.id.winterCheckBox)
-        summerCheckBox = findViewById(R.id.summerCheckBox)
-
         val name = nameEditText.text.toString()
         val description = descriptionEditText.text.toString()
-        val count = countEditText.text.toString().toIntOrNull() ?: 0
+        val color = colorEditText.text.toString()
+        val size = sizeEditText.text.toString()
+        val material = materialEditText.text.toString()
+        val price = priceEditText.text.toString().toIntOrNull() ?: 0
         val isWinter = winterCheckBox.isChecked
         val isSummer = summerCheckBox.isChecked
 
-        val jsonUser = "{\"name\": \"$name\", \"description\": \"$description\", \"count\": \"$count\", \"winter\": \"$isWinter\", \"summer\": \"$isSummer\", \"images\": ${imagesName.joinToString(prefix = "[", postfix = "]", transform = { "\"$it\"" })}}"
+        val imagesList = imagesName.map { "\"$it\"" }
+        val imagesJsonArray = imagesList.joinToString(prefix = "[", postfix = "]")
 
-        val requestBody = RequestBody.create(MediaType.parse("application/json"), jsonUser)
-        val call = productService.createProduct(requestBody)
+        val requestBody = """
+        {
+            "name": "$name",
+            "description": "$description",
+            "color": "$color",
+            "price": $price,
+            "winter": $isWinter,
+            "summer": $isSummer,
+            "size": "$size",
+            "material": "$material",
+            "images": $imagesJsonArray
+        }
+    """.trimIndent()
+        Log.w("TAG", requestBody)
+        val request = RequestBody.create(MediaType.parse("application/json"), requestBody)
+        val call = productService.createProduct(request)
 
         call.enqueue(object : Callback<ProductDto> {
             override fun onResponse(call: Call<ProductDto>, response: Response<ProductDto>) {
