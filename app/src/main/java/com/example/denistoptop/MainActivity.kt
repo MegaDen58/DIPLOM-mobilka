@@ -1,13 +1,13 @@
 package com.example.denistoptop
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchEditText: EditText
+    private lateinit var filterButton: Button
     private var products: List<ProductDto>? = null
     private var filteredProducts: List<ProductDto>? = null
 
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         favouritesButton = findViewById(R.id.favourites)
         burgerButton = findViewById(R.id.burgerMenu)
+        filterButton = findViewById(R.id.filterButton)
         cartButton = findViewById(R.id.cart)
         mainButton = findViewById(R.id.main)
         val toolbarClickListener = ToolbarButtonClickListener(this, toolbar, this)
@@ -90,6 +92,30 @@ class MainActivity : AppCompatActivity() {
                 // Обработка ошибок сети или других ошибок
             }
         })
+
+
+        val filterButton: Button = findViewById(R.id.filterButton)
+        filterButton.setOnClickListener {
+            // Создание диалога
+            val builder = AlertDialog.Builder(this)
+            val inflater = layoutInflater
+            val dialogView = inflater.inflate(R.layout.dialog_search_filters, null)
+            builder.setView(dialogView)
+
+            // Настройка диалога
+            builder.setTitle("Фильтры")
+            builder.setPositiveButton("Применить") { dialog, which ->
+
+            }
+            builder.setNegativeButton("Отмена") { dialog, which ->
+                // Закрытие диалога при нажатии на кнопку "Отмена"
+                dialog.dismiss()
+            }
+
+            // Отображение диалога
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        }
     }
 
     private fun filterProducts(query: String) {

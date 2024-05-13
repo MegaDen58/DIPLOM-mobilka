@@ -1,0 +1,68 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Название" />
+    <EditText
+        android:id="@+id/etDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Описание" />
+    <EditText
+        android:id="@+id/etMaterial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Материал" />
+    <EditText
+        android:id="@+id/etColor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Цвет" />
+    <EditText
+        android:id="@+id/etSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Размер" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etPriceFrom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="От"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/etPriceTo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="До"
+            android:inputType="numberDecimal" />
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/chkWinter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Зима" />
+
+    <CheckBox
+        android:id="@+id/chkSummer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Лето" />
+
+</LinearLayout>

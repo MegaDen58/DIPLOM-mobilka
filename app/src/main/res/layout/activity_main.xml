@@ -20,12 +20,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/filterButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp"
+        android:layout_below="@id/search"
+        android:textColor="@color/black"
+        android:layout_marginLeft="30dp"
+        android:textSize="20dp"
+        android:drawableLeft="@drawable/f1lter"
+        android:drawablePadding="8dp"
+        android:text="Фильтр"
+        android:background="@android:color/transparent"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="63dp"
+        android:layout_below="@id/filterButton"
         app:layout_constraintBottom_toTopOf="@+id/toolbar_layout"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_layout"
