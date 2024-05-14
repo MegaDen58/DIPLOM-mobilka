@@ -34,7 +34,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchEditText: EditText
     private lateinit var filterButton: Button
+    private lateinit var dropFilterButton: Button
     private var products: List<ProductDto>? = null
+    private var allProducts: List<ProductDto>? = null
     private var filteredProductsByName: List<ProductDto>? = null
     private var filteredProducts: List<ProductDto>? = null
 
@@ -63,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         filterButton = findViewById(R.id.filterButton)
         cartButton = findViewById(R.id.cart)
         mainButton = findViewById(R.id.main)
+        dropFilterButton = findViewById(R.id.dropFilterButton)
         val toolbarClickListener = ToolbarButtonClickListener(this, toolbar, this)
         favouritesButton.setOnClickListener(toolbarClickListener)
         burgerButton.setOnClickListener(toolbarClickListener)
@@ -96,6 +99,7 @@ class MainActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     products = response.body()
                     filteredProductsByName = products
+                    allProducts = products
                     showFilteredProducts()
                 } else {
                     // Обработка неудачного запроса
@@ -106,6 +110,14 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        dropFilterButton.setOnClickListener {
+            val myDataset = allProducts?.map {
+                val imageUrl = if (it.images.isNotEmpty()) "http://94.228.112.46:8080/api/products/image/${it.images[0]}" else "" // URL первого изображения
+                MainData(imageUrl, it.name)
+            } ?: emptyList()
+            recyclerView.adapter = MainAdapter(myDataset)
+            recyclerView.layoutManager = LinearLayoutManager(this)
+        }
 
         val filterButton: Button = findViewById(R.id.filterButton)
         filterButton.setOnClickListener {
