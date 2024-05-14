@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -34,7 +35,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var searchEditText: EditText
     private lateinit var filterButton: Button
     private var products: List<ProductDto>? = null
+    private var filteredProductsByName: List<ProductDto>? = null
     private var filteredProducts: List<ProductDto>? = null
+
+    private lateinit var etName: EditText
+    private lateinit var etDescription: EditText
+    private lateinit var etMaterial: EditText
+    private lateinit var etColor: EditText
+    private lateinit var etSize: EditText
+    private lateinit var etPriceFrom: EditText
+    private lateinit var etPriceTo: EditText
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +68,8 @@ class MainActivity : AppCompatActivity() {
         burgerButton.setOnClickListener(toolbarClickListener)
         cartButton.setOnClickListener(toolbarClickListener)
         mainButton.setOnClickListener(toolbarClickListener)
+
+
 
         mainButton.setBackgroundResource(R.drawable.selectedmain)
 
@@ -82,7 +95,7 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<List<ProductDto>>, response: Response<List<ProductDto>>) {
                 if (response.isSuccessful) {
                     products = response.body()
-                    filteredProducts = products
+                    filteredProductsByName = products
                     showFilteredProducts()
                 } else {
                     // Обработка неудачного запроса
@@ -106,6 +119,47 @@ class MainActivity : AppCompatActivity() {
             builder.setTitle("Фильтры")
             builder.setPositiveButton("Применить") { dialog, which ->
 
+                etName = dialogView.findViewById(R.id.etName)
+                etDescription = dialogView.findViewById(R.id.etDescription)
+                etMaterial = dialogView.findViewById(R.id.etMaterial)
+                etColor = dialogView.findViewById(R.id.etColor)
+                etSize = dialogView.findViewById(R.id.etSize)
+                etPriceFrom = dialogView.findViewById(R.id.etPriceFrom)
+                etPriceTo = dialogView.findViewById(R.id.etPriceTo)
+                // Получаем значения из полей ввода
+                val name = etName.text.toString()
+                val description = etDescription.text.toString()
+                val material = etMaterial.text.toString()
+                val color = etColor.text.toString()
+                val size = etSize.text.toString()
+                val priceFrom = etPriceFrom.text.toString().toDoubleOrNull()
+                val priceTo = etPriceTo.text.toString().toDoubleOrNull()
+
+                filteredProducts = mutableListOf<ProductDto>()
+
+                // Проходимся по всем объектам в списке products
+                products?.forEach { product ->
+                    // Проверяем каждый критерий фильтрации
+                    val nameMatched = name.isEmpty() || product.name.contains(name, ignoreCase = true)
+                    val descriptionMatched = description.isEmpty() || product.description.contains(description, ignoreCase = true)
+                    val materialMatched = material.isEmpty() || product.material.contains(material, ignoreCase = true)
+                    val colorMatched = color.isEmpty() || product.color.contains(color, ignoreCase = true)
+                    val sizeMatched = size.isEmpty() || product.size.contains(size, ignoreCase = true)
+                    val priceFromMatched = priceFrom == null || product.price >= priceFrom
+                    val priceToMatched = priceTo == null || product.price <= priceTo
+
+                    // Если все критерии удовлетворены, добавляем объект в новый список
+                    if (nameMatched && descriptionMatched && materialMatched && colorMatched && sizeMatched && priceFromMatched && priceToMatched) {
+                        (filteredProducts as MutableList<ProductDto>).add(product)
+                    }
+
+                    val myDataset = filteredProducts?.map {
+                        val imageUrl = if (it.images.isNotEmpty()) "http://94.228.112.46:8080/api/products/image/${it.images[0]}" else "" // URL первого изображения
+                        MainData(imageUrl, it.name)
+                    } ?: emptyList()
+                    recyclerView.adapter = MainAdapter(myDataset)
+                    recyclerView.layoutManager = LinearLayoutManager(this)
+                }
             }
             builder.setNegativeButton("Отмена") { dialog, which ->
                 // Закрытие диалога при нажатии на кнопку "Отмена"
@@ -119,7 +173,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun filterProducts(query: String) {
-        filteredProducts = if (query.isBlank()) {
+        filteredProductsByName = if (query.isBlank()) {
             products
         } else {
             products?.filter {
@@ -130,7 +184,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showFilteredProducts() {
-        val myDataset = filteredProducts?.map {
+        val myDataset = filteredProductsByName?.map {
             val imageUrl = if (it.images.isNotEmpty()) "http://94.228.112.46:8080/api/products/image/${it.images[0]}" else "" // URL первого изображения
             MainData(imageUrl, it.name)
         } ?: emptyList()

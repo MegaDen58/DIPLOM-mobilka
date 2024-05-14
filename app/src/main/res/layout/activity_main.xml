@@ -36,6 +36,21 @@
         android:text="Фильтр"
         android:background="@android:color/transparent"/>
 
+    <androidx.appcompat.widget.AppCompatButton
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/dropFilterButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp"
+        android:layout_below="@id/search"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:layout_marginEnd="32dp"
+        android:drawablePadding="8dp"
+        android:text="Сбросить"
+        android:background="@android:color/transparent"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

@@ -102,6 +102,13 @@ public class ProductDto implements Serializable {
     public boolean isSummer() {
         return summer;
     }
+    public boolean getWinter() {
+        return winter;
+    }
+
+    public boolean getSummer() {
+        return summer;
+    }
 
     // Создаем конструктор, который принимает все поля класса
     public ProductDto(String name, String description, int count, boolean winter, boolean summer, List<String> images, int price, String material, String size, String color) {
