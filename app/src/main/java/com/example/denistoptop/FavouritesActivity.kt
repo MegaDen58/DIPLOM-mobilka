@@ -25,6 +25,7 @@ class FavouritesActivity : AppCompatActivity() {
     private lateinit var burgerButton: ImageButton
     private lateinit var mainButton: ImageButton
     private lateinit var cartButton: ImageButton
+    private lateinit var historyButton: ImageButton
     private lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +46,8 @@ class FavouritesActivity : AppCompatActivity() {
         burgerButton = findViewById(R.id.burgerMenu)
         mainButton = findViewById(R.id.main)
         cartButton = findViewById(R.id.cart)
+        historyButton = findViewById(R.id.history)
+
 
         val toolbarClickListener = ToolbarButtonClickListener(this, toolbar, this)
         favouritesButton.setOnClickListener(toolbarClickListener)
@@ -52,7 +55,7 @@ class FavouritesActivity : AppCompatActivity() {
         burgerButton.setOnClickListener(toolbarClickListener)
         mainButton.setOnClickListener(toolbarClickListener)
         cartButton.setOnClickListener(toolbarClickListener)
-
+        historyButton.setOnClickListener(toolbarClickListener)
 
         productService = retrofit.create(ProductService::class.java)
 

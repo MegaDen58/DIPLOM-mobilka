@@ -35,6 +35,16 @@ class ToolbarButtonClickListener(private val context: Context, private val toolb
                 //Toast.makeText(context, "Нажато на избранное", Toast.LENGTH_SHORT).show()
             }
 
+            R.id.history -> {
+                val intent = Intent(context, HistoryActivity::class.java)
+                context.startActivity(intent)
+                activity.overridePendingTransition(0, 0)
+
+                clearAll()
+
+                //Toast.makeText(context, "Нажато на избранное", Toast.LENGTH_SHORT).show()
+            }
+
             R.id.main -> {
                 val intent = Intent(context, MainActivity::class.java)
                 context.startActivity(intent)

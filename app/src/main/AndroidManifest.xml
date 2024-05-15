@@ -42,6 +42,11 @@
             android:label="@string/title_activity_registration"
             android:theme="@style/Theme.DenisTopTop" />
         <activity
+            android:name=".HistoryActivity"
+            android:exported="false"
+            android:label="@string/title_activity_main"
+            android:theme="@style/Theme.DenisTopTop" />
+        <activity
             android:name=".StartActivity"
             android:exported="true">
             <intent-filter>

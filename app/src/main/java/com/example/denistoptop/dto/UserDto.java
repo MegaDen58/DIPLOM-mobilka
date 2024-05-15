@@ -72,4 +72,15 @@ public class UserDto {
         this.email = email;
     }
 
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", favourites=" + favourites +
+                ", balance=" + balance +
+                '}';
+    }
 }

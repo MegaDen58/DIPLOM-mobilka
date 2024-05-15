@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.denistoptop.adapter.MainAdapter
 import com.example.denistoptop.data.MainData
 import com.example.denistoptop.dto.ProductDto
+import com.example.denistoptop.dto.UserManager
 import com.example.denistoptop.service.ProductService
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var burgerButton: ImageButton
     private lateinit var cartButton: ImageButton
     private lateinit var mainButton: ImageButton
+    private lateinit var historyButton: ImageButton
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchEditText: EditText
@@ -54,6 +56,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val user = UserManager.getUserInfo(this)
+
+        Log.w("USER", user.toString())
+
         recyclerView = findViewById(R.id.recyclerView)
         searchEditText = findViewById(R.id.search)
         toolbar = findViewById<Toolbar>(R.id.toolbar_layout)
@@ -65,14 +71,14 @@ class MainActivity : AppCompatActivity() {
         filterButton = findViewById(R.id.filterButton)
         cartButton = findViewById(R.id.cart)
         mainButton = findViewById(R.id.main)
+        historyButton = findViewById(R.id.history)
         dropFilterButton = findViewById(R.id.dropFilterButton)
         val toolbarClickListener = ToolbarButtonClickListener(this, toolbar, this)
         favouritesButton.setOnClickListener(toolbarClickListener)
         burgerButton.setOnClickListener(toolbarClickListener)
         cartButton.setOnClickListener(toolbarClickListener)
         mainButton.setOnClickListener(toolbarClickListener)
-
-
+        historyButton.setOnClickListener(toolbarClickListener)
 
         mainButton.setBackgroundResource(R.drawable.selectedmain)
 

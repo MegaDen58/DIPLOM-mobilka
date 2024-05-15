@@ -24,6 +24,7 @@ import com.example.denistoptop.adapter.CartAdapter
 import com.example.denistoptop.adapter.Item
 import com.example.denistoptop.dto.OrderDto
 import com.example.denistoptop.dto.UserDto
+import com.example.denistoptop.dto.UserManager
 import com.example.denistoptop.service.OrderService
 import com.example.denistoptop.service.ProductService
 import com.example.denistoptop.service.UserService
@@ -47,6 +48,7 @@ class CartActivity : AppCompatActivity() {
     private lateinit var burgerButton: ImageButton
     private lateinit var cartButton: ImageButton
     private lateinit var mainButton: ImageButton
+    private lateinit var historyButton: ImageButton
     private lateinit var toolbar: Toolbar
 
     private lateinit var retrofit: Retrofit
@@ -73,12 +75,14 @@ class CartActivity : AppCompatActivity() {
         favouritesButton = findViewById(R.id.favourites)
         burgerButton = findViewById(R.id.burgerMenu)
         cartButton = findViewById(R.id.cart)
+        historyButton = findViewById(R.id.history)
         val toolbarClickListener = ToolbarButtonClickListener(this, toolbar, this)
         favouritesButton.setOnClickListener(toolbarClickListener)
         favouritesButton.setBackgroundResource(R.drawable.noselectedheart)
         cartButton.setBackgroundResource(R.drawable.selectedcart)
         burgerButton.setOnClickListener(toolbarClickListener)
         mainButton.setOnClickListener(toolbarClickListener)
+        historyButton.setOnClickListener(toolbarClickListener)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         val rentButton: Button = findViewById(R.id.rentButton)
@@ -124,13 +128,15 @@ class CartActivity : AppCompatActivity() {
 
         rentButton.setOnClickListener {
             // Обработка нажатия на кнопку аренды
-            val differenceInDays = calculateDifferenceInDays()
+            val differenceInDays = calculateDifferenceInDays() + 1
             val rentPrice = differenceInDays * GlobalVariables.allCartPrice
+            Log.w("DIF", differenceInDays.toString())
 //            val message = "Арендовать ($rentPrice рублей)"
 //            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-            if (GlobalVariables.user!!.balance >= rentPrice) {
-                var newBalance = GlobalVariables.user!!.balance - rentPrice
-                var userId = GlobalVariables.userId
+            val user = UserManager.getUserInfo(this)
+            if (user!!.balance >= rentPrice) {
+                var newBalance = user!!.balance - rentPrice
+                var userId = user.id
 
                 val jsonString = "{\"userId\": $userId, \"balance\": $newBalance}"
 
@@ -172,7 +178,7 @@ class CartActivity : AppCompatActivity() {
 
                             val orderJsonString =
                                 "{\"start_date\": \"$selectedStartDate\", \"end_date\": \"$selectedEndDate\", " +
-                                        "\"price\": ${GlobalVariables.allCartPrice}, \"user_id\": ${GlobalVariables.userId}, " +
+                                        "\"price\": ${rentPrice}, \"user_id\": ${user.id}, " +
                                         "\"type\": \"Оплачен\", \"items\": ${JSONArray(productList)}}"
 
                             val requestOrderBody = RequestBody.create(
@@ -258,7 +264,7 @@ class CartActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateRentButtonText() {
-        val differenceInDays = calculateDifferenceInDays()
+        val differenceInDays = calculateDifferenceInDays() + 1
         val rentPrice = differenceInDays * GlobalVariables.allCartPrice
         val buttonText = "Арендовать ($rentPrice рублей)"
         rentButton.text = buttonText

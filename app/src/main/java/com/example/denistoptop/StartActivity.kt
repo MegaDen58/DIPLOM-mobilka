@@ -13,10 +13,12 @@ import com.google.gson.Gson
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.Call
+import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
 
 class StartActivity : AppCompatActivity() {
     private lateinit var retrofit: Retrofit
@@ -96,6 +98,8 @@ class StartActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+
     fun saveUserInfo(context: Context, user: UserDto?) {
         val sharedPreferences = context.getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -103,6 +107,11 @@ class StartActivity : AppCompatActivity() {
         val userJson = gson.toJson(user)
         editor.putString("USER_INFO", userJson)
         editor.apply()
+
+        // Если пользователь предоставлен, отправляем запрос к API для получения полной информации о пользователе и сохраняем ее
+        user?.let {
+            getUserInfoFromApi(context, it.id.toString())
+        }
     }
 
     fun getUserInfo(context: Context): UserDto? {
@@ -110,5 +119,31 @@ class StartActivity : AppCompatActivity() {
         val gson = Gson()
         val userJson = sharedPreferences.getString("USER_INFO", null)
         return gson.fromJson(userJson, UserDto::class.java)
+    }
+
+    private fun getUserInfoFromApi(context: Context, userId: String) {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://94.228.112.46:8080/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(UserService::class.java)
+        val call = service.getUserById(userId)
+
+        call.enqueue(object : Callback<UserDto> {
+            override fun onResponse(call: Call<UserDto>, response: Response<UserDto>) {
+                if (response.isSuccessful) {
+                    val user = response.body()
+                    // Сохраняем полученного пользователя в SharedPreferences
+                    saveUserInfo(context, user)
+                } else {
+                    // Обработка неуспешного запроса
+                }
+            }
+
+            override fun onFailure(call: Call<UserDto>, t: Throwable) {
+                // Обработка ошибок сети или других ошибок
+            }
+        })
     }
 }
