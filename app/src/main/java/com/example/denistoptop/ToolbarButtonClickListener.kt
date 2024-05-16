@@ -12,6 +12,7 @@ import android.widget.ImageButton
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import com.example.denistoptop.dto.UserManager
 
 class ToolbarButtonClickListener(private val context: Context, private val toolbar: Toolbar, private val activity: Activity) : View.OnClickListener {
     override fun onClick(view: View?) {
@@ -65,7 +66,7 @@ class ToolbarButtonClickListener(private val context: Context, private val toolb
                 val catalogButton = popupView.findViewById<Button>(R.id.catalogButton)
                 val cartButton = popupView.findViewById<Button>(R.id.cartButton)
 
-                balanceText.setText("Баланс: ${GlobalVariables.user?.balance}₽")
+                balanceText.setText("Баланс: ${UserManager.getUserInfo(this.context)!!.balance}₽")
 
                 // Задание действий для кнопок
                 replenishButton.setOnClickListener {

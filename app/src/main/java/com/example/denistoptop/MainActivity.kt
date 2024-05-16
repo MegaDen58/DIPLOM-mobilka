@@ -50,8 +50,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var etPriceFrom: EditText
     private lateinit var etPriceTo: EditText
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

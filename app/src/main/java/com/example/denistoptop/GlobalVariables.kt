@@ -9,5 +9,6 @@ class GlobalVariables {
         var user: UserDto? = null
         var allCartPrice: Int = 0
         var cart: MutableList<ProductDto> = mutableListOf()
+        var selectedCart: MutableList<ProductDto> = mutableListOf()
     }
 }

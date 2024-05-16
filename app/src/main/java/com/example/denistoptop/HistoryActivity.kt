@@ -1,5 +1,6 @@
 package com.example.denistoptop
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.denistoptop.adapter.OnOrderClickListener
 import com.example.denistoptop.adapter.OrderAdapter
 import com.example.denistoptop.dto.OrderDto
+import com.example.denistoptop.dto.ProductDto
+import com.example.denistoptop.dto.UserManager
 import com.example.denistoptop.service.OrderService
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,6 +30,7 @@ class HistoryActivity: AppCompatActivity(){
     private lateinit var historyButton: ImageButton
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
+    private var allProducts: List<ProductDto>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +63,7 @@ class HistoryActivity: AppCompatActivity(){
         val service = retrofit.create(OrderService::class.java)
 
         // Выполнение запроса к серверу
-        service.getAllOrdersByUserId(1).enqueue(object : Callback<List<OrderDto>> {
+        service.getAllOrdersByUserId(UserManager.getUserInfo(this)!!.id).enqueue(object : Callback<List<OrderDto>> {
             override fun onResponse(call: Call<List<OrderDto>>, response: Response<List<OrderDto>>) {
                 if (response.isSuccessful) {
                     val orders = response.body()
@@ -68,7 +72,34 @@ class HistoryActivity: AppCompatActivity(){
                         // В методе onCreate вашей Activity
                         val adapter = OrderAdapter(orders, object : OnOrderClickListener {
                             override fun onOrderClick(order: OrderDto) {
-                                Log.d("OrderClicked", "Нажат заказ с ID: ${order.id}")
+
+                                val retrofit = Retrofit.Builder()
+                                    .baseUrl("http://94.228.112.46:8080/api/")
+                                    .addConverterFactory(GsonConverterFactory.create())
+                                    .build()
+
+                                val apiService = retrofit.create(OrderService::class.java)
+
+                                apiService.getProductsForOrder(order.id).enqueue(object : Callback<List<ProductDto>> {
+                                    override fun onResponse(call: Call<List<ProductDto>>, response: Response<List<ProductDto>>) {
+                                        if (response.isSuccessful) {
+                                            val products = response.body()
+                                            // Обработка полученных продуктов
+                                            products?.let { productList ->
+                                                GlobalVariables.selectedCart = products as MutableList<ProductDto>
+
+                                                val intent = Intent(this@HistoryActivity, SelectedOrder::class.java)
+                                                startActivity(intent)
+                                                overridePendingTransition(0, 0)
+                                            }
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<List<ProductDto>>, t: Throwable) {
+                                        // Обработка ошибки при выполнении запроса
+                                    }
+                                })
+
                             }
                         })
                         recyclerView.adapter = adapter

@@ -14,4 +14,6 @@ interface OrderService {
     fun createOrder(@Body orderDto: RequestBody): Call<OrderDto>
     @GET("orders/user/{userId}")
     fun getAllOrdersByUserId(@Path("userId") userId: Long): Call<List<OrderDto>>
+    @GET("orders/{orderId}/products")
+    fun getProductsForOrder(@Path("orderId") orderId: Long): Call<List<ProductDto>>
 }

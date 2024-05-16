@@ -23,6 +23,22 @@ public class ProductDto implements Serializable {
     private String material;
     private String size;
 
+    @Override
+    public String toString() {
+        return "ProductDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", images=" + images +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", winter=" + winter +
+                ", summer=" + summer +
+                ", color='" + color + '\'' +
+                ", material='" + material + '\'' +
+                ", size='" + size + '\'' +
+                '}';
+    }
+
     public void setColor(String color) {
         this.color = color;
     }
