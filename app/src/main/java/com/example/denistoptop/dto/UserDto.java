@@ -12,7 +12,13 @@ public class UserDto {
     String password;
     String email;
     List<Integer> favourites;
-    public Integer balance;
+    Integer balance;
+
+    List<String> roles;
+
+    public List<String> getRoles() {
+        return roles;
+    }
 
     public Long getId() {
         return id;
@@ -81,6 +87,7 @@ public class UserDto {
                 ", email='" + email + '\'' +
                 ", favourites=" + favourites +
                 ", balance=" + balance +
+                ", roles=" + roles +
                 '}';
     }
 }

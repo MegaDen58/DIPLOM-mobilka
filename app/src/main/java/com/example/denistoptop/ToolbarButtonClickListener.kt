@@ -12,9 +12,12 @@ import android.widget.ImageButton
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import com.example.denistoptop.dto.UserManager
 
 class ToolbarButtonClickListener(private val context: Context, private val toolbar: Toolbar, private val activity: Activity) : View.OnClickListener {
+    private var popupWindow: PopupWindow? = null
+
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.cart -> {
@@ -66,8 +69,19 @@ class ToolbarButtonClickListener(private val context: Context, private val toolb
                 val catalogButton = popupView.findViewById<Button>(R.id.catalogButton)
                 val cartButton = popupView.findViewById<Button>(R.id.cartButton)
                 val exitButton = popupView.findViewById<Button>(R.id.exitButton)
+                val createProduct = popupView.findViewById<Button>(R.id.createProduct)
+                createProduct.isVisible = false
 
-                balanceText.setText("Баланс: ${UserManager.getUserInfo(this.context)!!.balance}₽")
+                val userInfo = UserManager.getUserInfo(context)
+                val userRoles = userInfo?.roles?.toMutableList() ?: mutableListOf()
+
+                if (userRoles.contains("ADMIN")) {
+                    createProduct.isVisible = true
+                }
+
+                //createProduct.isVisible = false;
+
+                balanceText.text = "Баланс: ${UserManager.getUserInfo(this.context)!!.balance}₽"
 
                 // Задание действий для кнопок
                 replenishButton.setOnClickListener {
@@ -86,17 +100,27 @@ class ToolbarButtonClickListener(private val context: Context, private val toolb
                     context.startActivity(intent)
                     activity.overridePendingTransition(0, 0)
 
+                    popupWindow?.dismiss() // Закрытие всплывающего окна
+                    activity.finish()
                     clearAll()
+                }
+                createProduct.setOnClickListener{
+                    val intent = Intent(context, CreateProductActivity::class.java)
+                    context.startActivity(intent)
+                    activity.overridePendingTransition(0, 0)
+
+                    popupWindow?.dismiss() // Закрытие всплывающего окна
+
                 }
 
                 // Создание всплывающего окна
                 val width = ViewGroup.LayoutParams.WRAP_CONTENT
                 val height = ViewGroup.LayoutParams.MATCH_PARENT
                 val focusable = true
-                val popupWindow = PopupWindow(popupView, width, height, focusable)
+                popupWindow = PopupWindow(popupView, width, height, focusable)
 
                 // Отображение всплывающего окна в указанной позиции
-                popupWindow.showAtLocation(view, Gravity.TOP or Gravity.START, 0, toolbar.height)
+                popupWindow?.showAtLocation(view, Gravity.TOP or Gravity.START, 0, toolbar.height)
             }
         }
     }

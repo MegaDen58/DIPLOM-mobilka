@@ -33,13 +33,19 @@
         android:layout_height="wrap_content"
         android:text="Корзина"
         android:layout_marginTop="8dp"/>
+    <Button
+        android:id="@+id/createProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Добавить товар"
+        android:layout_marginTop="8dp"/>
 
     <Button
         android:id="@+id/exitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Выход"
-        android:layout_marginTop="450dp"
+        android:layout_marginTop="350dp"
         android:drawableLeft="@drawable/exit"
         android:background="?android:attr/selectableItemBackground"
         android:textColor="@android:color/black"

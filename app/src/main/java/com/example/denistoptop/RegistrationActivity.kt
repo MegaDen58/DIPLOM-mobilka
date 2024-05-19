@@ -12,6 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.widget.Toast
 import com.example.denistoptop.dto.UserDto
+import com.example.denistoptop.dto.UserManager
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
@@ -55,7 +56,7 @@ class RegistrationActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     // Обработка успешного ответа
                     Toast.makeText(this@RegistrationActivity, "Регистрация успешна!", Toast.LENGTH_SHORT).show()
-
+                    UserManager.deleteUserInfo(this@RegistrationActivity)
                 } else {
                     // Обработка неудачного запроса
                     Toast.makeText(this@RegistrationActivity, "Ошибка при регистрации. Пожалуйста, попробуйте еще раз.", Toast.LENGTH_SHORT).show()
