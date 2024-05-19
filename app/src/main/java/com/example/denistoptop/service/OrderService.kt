@@ -12,6 +12,8 @@ import retrofit2.http.Path
 interface OrderService {
     @POST("orders/create")
     fun createOrder(@Body orderDto: RequestBody): Call<OrderDto>
+    @POST("orders/delete/{orderId}")
+    fun deleteOrder(@Path("orderId") orderId: Long): Call<Void>
     @GET("orders/user/{userId}")
     fun getAllOrdersByUserId(@Path("userId") userId: Long): Call<List<OrderDto>>
     @GET("orders/{orderId}/products")
