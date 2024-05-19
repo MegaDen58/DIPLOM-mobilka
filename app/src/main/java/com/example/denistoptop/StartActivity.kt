@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.denistoptop.dto.UserDto
+import com.example.denistoptop.dto.UserManager
 import com.example.denistoptop.service.UserService
 import com.google.gson.Gson
 import okhttp3.MediaType
@@ -28,7 +29,7 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
 
-        val user = getUserInfo(this)
+        val user = UserManager.getUserInfo(this)
         if (user != null) {
             // Идентификатор пользователя доступен, переход к MainActivity
             val intent = Intent(this, MainActivity::class.java)
@@ -114,12 +115,6 @@ class StartActivity : AppCompatActivity() {
         }
     }
 
-    fun getUserInfo(context: Context): UserDto? {
-        val sharedPreferences = context.getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE)
-        val gson = Gson()
-        val userJson = sharedPreferences.getString("USER_INFO", null)
-        return gson.fromJson(userJson, UserDto::class.java)
-    }
 
     private fun getUserInfoFromApi(context: Context, userId: String) {
         val retrofit = Retrofit.Builder()

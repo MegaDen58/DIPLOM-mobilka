@@ -20,5 +20,12 @@ class UserManager {
             val userJson = sharedPreferences.getString("USER_INFO", null)
             return gson.fromJson(userJson, UserDto::class.java)
         }
+
+        fun deleteUserInfo(context: Context) {
+            val sharedPreferences = context.getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.remove("USER_INFO")
+            editor.apply()
+        }
     }
 }

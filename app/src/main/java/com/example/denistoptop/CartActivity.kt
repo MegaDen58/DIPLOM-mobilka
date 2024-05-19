@@ -76,6 +76,7 @@ class CartActivity : AppCompatActivity() {
         burgerButton = findViewById(R.id.burgerMenu)
         cartButton = findViewById(R.id.cart)
         historyButton = findViewById(R.id.history)
+
         val toolbarClickListener = ToolbarButtonClickListener(this, toolbar, this)
         favouritesButton.setOnClickListener(toolbarClickListener)
         favouritesButton.setBackgroundResource(R.drawable.noselectedheart)

@@ -78,6 +78,7 @@ class MainActivity : AppCompatActivity() {
         mainButton.setOnClickListener(toolbarClickListener)
         historyButton.setOnClickListener(toolbarClickListener)
 
+
         mainButton.setBackgroundResource(R.drawable.selectedmain)
 
         retrofit = Retrofit.Builder()

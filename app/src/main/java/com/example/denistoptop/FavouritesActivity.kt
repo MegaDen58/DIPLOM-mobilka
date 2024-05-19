@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.ImageButton
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +27,7 @@ class FavouritesActivity : AppCompatActivity() {
     private lateinit var mainButton: ImageButton
     private lateinit var cartButton: ImageButton
     private lateinit var historyButton: ImageButton
+
     private lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +49,6 @@ class FavouritesActivity : AppCompatActivity() {
         mainButton = findViewById(R.id.main)
         cartButton = findViewById(R.id.cart)
         historyButton = findViewById(R.id.history)
-
 
         val toolbarClickListener = ToolbarButtonClickListener(this, toolbar, this)
         favouritesButton.setOnClickListener(toolbarClickListener)

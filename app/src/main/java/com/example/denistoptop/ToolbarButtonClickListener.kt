@@ -65,6 +65,7 @@ class ToolbarButtonClickListener(private val context: Context, private val toolb
                 val replenishButton = popupView.findViewById<Button>(R.id.replenishButton)
                 val catalogButton = popupView.findViewById<Button>(R.id.catalogButton)
                 val cartButton = popupView.findViewById<Button>(R.id.cartButton)
+                val exitButton = popupView.findViewById<Button>(R.id.exitButton)
 
                 balanceText.setText("Баланс: ${UserManager.getUserInfo(this.context)!!.balance}₽")
 
@@ -77,6 +78,15 @@ class ToolbarButtonClickListener(private val context: Context, private val toolb
                 }
                 cartButton.setOnClickListener {
                     // Действие при нажатии на кнопку "Корзина"
+                }
+                exitButton.setOnClickListener {
+                    UserManager.deleteUserInfo(context)
+
+                    val intent = Intent(context, StartActivity::class.java)
+                    context.startActivity(intent)
+                    activity.overridePendingTransition(0, 0)
+
+                    clearAll()
                 }
 
                 // Создание всплывающего окна
