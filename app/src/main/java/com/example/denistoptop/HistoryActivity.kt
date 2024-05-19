@@ -88,6 +88,8 @@ class HistoryActivity: AppCompatActivity(){
                                             // Обработка полученных продуктов
                                             products?.let { productList ->
                                                 GlobalVariables.selectedCart = products as MutableList<ProductDto>
+                                                GlobalVariables.allCartPrice = order.price
+                                                GlobalVariables.order = order
 
                                                 val intent = Intent(this@HistoryActivity, SelectedOrder::class.java)
                                                 startActivity(intent)
