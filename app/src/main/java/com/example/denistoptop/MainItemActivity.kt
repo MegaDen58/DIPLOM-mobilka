@@ -1,5 +1,6 @@
 package com.example.denistoptop
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,9 +15,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.denistoptop.adapter.MainItemImageAdapter
 import com.example.denistoptop.dto.ProductDto
 import com.example.denistoptop.dto.UserDto
+import com.example.denistoptop.service.ProductService
 import com.example.denistoptop.service.UserService
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,10 +34,12 @@ class MainItemActivity : AppCompatActivity() {
     private lateinit var recyclerViewImages: RecyclerView
     private lateinit var toolbar: Toolbar
     private lateinit var cartButton: Button
+    private lateinit var deleteButton: ImageButton
     var isFavourite = false
 
     private lateinit var retrofit: Retrofit
     private lateinit var userService: UserService
+    private lateinit var productService: ProductService
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +52,7 @@ class MainItemActivity : AppCompatActivity() {
             .build()
 
         userService = retrofit.create(UserService::class.java)
+        productService = retrofit.create(ProductService::class.java)
 
         textProductName = findViewById(R.id.textProductName)
         textSuitableFor = findViewById(R.id.textSuitableFor)
@@ -63,6 +69,8 @@ class MainItemActivity : AppCompatActivity() {
         }
 
         val secondButton = findViewById<ImageButton>(R.id.secondButton)
+        deleteButton = findViewById<ImageButton>(R.id.deleteButton)
+
 
         val call = userService.getUserById(GlobalVariables.userId.toString())
         Log.d("USERID", GlobalVariables.userId.toString())
@@ -161,6 +169,30 @@ class MainItemActivity : AppCompatActivity() {
                 }
             })
         }
+
+        deleteButton.setOnClickListener {
+            product?.let {
+                val productId = it.id
+                if (productId != null) {
+                    productService.deleteProduct(productId).enqueue(object : Callback<ResponseBody> {
+                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                            if (response.isSuccessful) {
+                                Toast.makeText(this@MainItemActivity, "Продукт удален", Toast.LENGTH_SHORT).show()
+                                setResult(RESULT_OK)
+                                finish()
+                            } else {
+                                Toast.makeText(this@MainItemActivity, "Ошибка при удалении продукта", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                            Toast.makeText(this@MainItemActivity, "Произошла ошибка: ${t.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                }
+            }
+        }
+
 
         cartButton.setOnClickListener {
             product?.let { it1 -> GlobalVariables.cart.add(it1) }

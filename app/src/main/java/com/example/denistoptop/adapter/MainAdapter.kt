@@ -1,4 +1,5 @@
 package com.example.denistoptop.adapter
+import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -6,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.denistoptop.MainActivity
 import com.example.denistoptop.MainItemActivity
 import com.example.denistoptop.data.MainData
 import com.example.denistoptop.databinding.ItemLayoutBinding
@@ -20,14 +22,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainAdapter(private val dataSet: List<MainData>) :
     RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
-        private var listener: OnItemClickListener? = null
-
-
-    // Объявление интерфейса для обработки нажатий
     interface OnItemClickListener {
         fun onItemClick(imageUrl: String)
     }
-    // Метод для установки слушателя нажатий
+
+    private var listener: OnItemClickListener? = null
+
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.listener = listener
     }
@@ -53,25 +53,22 @@ class MainAdapter(private val dataSet: List<MainData>) :
             loadImage(item.imageResource, viewHolder.binding.imageView)
         }
 
-        // Обработка нажатий на элемент RecyclerView
         viewHolder.binding.root.setOnClickListener {
             listener?.onItemClick(item.imageResource)
 
             val picture = item.imageResource.split("/").lastOrNull()
-            // Вызов метода getProductByImage и обработка результата
-            productService.getProductByImage(picture.toString()).enqueue(object :
-                Callback<ProductDto> {
+            productService.getProductByImage(picture.toString()).enqueue(object : Callback<ProductDto> {
                 override fun onResponse(call: Call<ProductDto>, response: Response<ProductDto>) {
                     if (response.isSuccessful) {
                         val product = response.body()
                         val productName = product?.name ?: "ERROR NAME"
                         Log.d("PRODUCT NAME", productName)
 
-                        // Создание Intent для открытия MainItemActivity и передача объекта product
                         val intent = Intent(viewHolder.itemView.context, MainItemActivity::class.java).apply {
                             putExtra("product", product)
                         }
-                        viewHolder.itemView.context.startActivity(intent)
+
+                        (viewHolder.itemView.context as? Activity)?.startActivityForResult(intent, MainActivity.REQUEST_CODE_DELETE_PRODUCT)
                     } else {
                         // Обработка неудачного запроса
                     }
@@ -82,14 +79,15 @@ class MainAdapter(private val dataSet: List<MainData>) :
                 }
             })
 
-            // Вывод URL изображения в логи
             Log.d("MainAdapter", "Clicked on image: ${item.imageResource}")
         }
     }
+
     private fun loadImage(url: String, imageView: ImageView) {
         Glide.with(imageView.context)
             .load(url)
             .into(imageView)
     }
+
     override fun getItemCount() = dataSet.size
 }

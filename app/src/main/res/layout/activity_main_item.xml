@@ -32,6 +32,16 @@
             android:scaleType="fitXY"
             android:contentDescription="Second Button"
             android:layout_gravity="end"/>
+
+        <ImageButton
+            android:id="@+id/deleteButton"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/bucket"
+            android:layout_marginEnd="24dp"
+            android:scaleType="fitXY"
+            android:contentDescription="Second Button"
+            android:layout_gravity="end"/>
     </androidx.appcompat.widget.Toolbar>
 
     <!-- Заголовок с именем продукта -->

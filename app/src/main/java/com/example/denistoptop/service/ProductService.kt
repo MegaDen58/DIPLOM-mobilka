@@ -28,4 +28,7 @@ interface ProductService {
 
     @GET("products/product/{imageName}")
     fun getProductByImage(@Path("imageName") imageName: String): Call<ProductDto>
+
+    @POST("products/{productId}/delete")
+    fun deleteProduct(@Path("productId") productId: Long): Call<ResponseBody>
 }

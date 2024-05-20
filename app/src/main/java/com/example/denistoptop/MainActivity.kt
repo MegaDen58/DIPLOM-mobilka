@@ -1,5 +1,6 @@
 package com.example.denistoptop
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -50,6 +51,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var etPriceFrom: EditText
     private lateinit var etPriceTo: EditText
 
+    companion object {
+        const val REQUEST_CODE_DELETE_PRODUCT = 1
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -87,6 +92,8 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         productService = retrofit.create(ProductService::class.java)
+
+        fetchProducts()
 
         searchEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
@@ -207,5 +214,32 @@ class MainActivity : AppCompatActivity() {
         } ?: emptyList()
         recyclerView.adapter = MainAdapter(myDataset)
         recyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_DELETE_PRODUCT && resultCode == RESULT_OK) {
+            // Повторный запрос списка продуктов
+            fetchProducts()
+        }
+    }
+
+    private fun fetchProducts() {
+        productService.getAllProducts().enqueue(object : Callback<List<ProductDto>> {
+            override fun onResponse(call: Call<List<ProductDto>>, response: Response<List<ProductDto>>) {
+                if (response.isSuccessful) {
+                    products = response.body()
+                    filteredProductsByName = products
+                    allProducts = products
+                    showFilteredProducts()
+                } else {
+                    // Обработка неудачного запроса
+                }
+            }
+
+            override fun onFailure(call: Call<List<ProductDto>>, t: Throwable) {
+                // Обработка ошибок сети или других ошибок
+            }
+        })
     }
 }

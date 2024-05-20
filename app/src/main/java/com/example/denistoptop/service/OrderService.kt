@@ -18,4 +18,6 @@ interface OrderService {
     fun getAllOrdersByUserId(@Path("userId") userId: Long): Call<List<OrderDto>>
     @GET("orders/{orderId}/products")
     fun getProductsForOrder(@Path("orderId") orderId: Long): Call<List<ProductDto>>
+    @GET("orders/all")
+    fun getAllProducts(): Call<List<ProductDto>>
 }

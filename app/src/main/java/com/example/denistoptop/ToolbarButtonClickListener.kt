@@ -13,7 +13,17 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
+import com.example.denistoptop.adapter.OnOrderClickListener
+import com.example.denistoptop.adapter.OrderAdapter
+import com.example.denistoptop.dto.OrderDto
+import com.example.denistoptop.dto.ProductDto
 import com.example.denistoptop.dto.UserManager
+import com.example.denistoptop.service.OrderService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class ToolbarButtonClickListener(private val context: Context, private val toolbar: Toolbar, private val activity: Activity) : View.OnClickListener {
     private var popupWindow: PopupWindow? = null
@@ -70,6 +80,7 @@ class ToolbarButtonClickListener(private val context: Context, private val toolb
                 val cartButton = popupView.findViewById<Button>(R.id.cartButton)
                 val exitButton = popupView.findViewById<Button>(R.id.exitButton)
                 val createProduct = popupView.findViewById<Button>(R.id.createProduct)
+                val orderButton = popupView.findViewById<Button>(R.id.orderButton)
                 createProduct.isVisible = false
 
                 val userInfo = UserManager.getUserInfo(context)
@@ -78,8 +89,6 @@ class ToolbarButtonClickListener(private val context: Context, private val toolb
                 if (userRoles.contains("ADMIN")) {
                     createProduct.isVisible = true
                 }
-
-                //createProduct.isVisible = false;
 
                 balanceText.text = "Баланс: ${UserManager.getUserInfo(this.context)!!.balance}₽"
 
@@ -110,6 +119,8 @@ class ToolbarButtonClickListener(private val context: Context, private val toolb
                     activity.overridePendingTransition(0, 0)
 
                     popupWindow?.dismiss() // Закрытие всплывающего окна
+                }
+                orderButton.setOnClickListener {
 
                 }
 
