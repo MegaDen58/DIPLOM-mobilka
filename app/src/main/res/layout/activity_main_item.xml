@@ -23,6 +23,7 @@
             android:contentDescription="Back Button"
             android:layout_gravity="start"/>
 
+
         <ImageButton
             android:id="@+id/secondButton"
             android:layout_width="35dp"
@@ -38,6 +39,16 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:background="@drawable/bucket"
+            android:layout_marginEnd="24dp"
+            android:scaleType="fitXY"
+            android:contentDescription="Second Button"
+            android:layout_gravity="end"/>
+
+        <ImageButton
+            android:id="@+id/editButton"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/edit"
             android:layout_marginEnd="24dp"
             android:scaleType="fitXY"
             android:contentDescription="Second Button"

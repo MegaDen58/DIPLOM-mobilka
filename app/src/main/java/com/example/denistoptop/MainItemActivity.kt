@@ -35,6 +35,8 @@ class MainItemActivity : AppCompatActivity() {
     private lateinit var toolbar: Toolbar
     private lateinit var cartButton: Button
     private lateinit var deleteButton: ImageButton
+    private lateinit var editButton: ImageButton
+
     var isFavourite = false
 
     private lateinit var retrofit: Retrofit
@@ -59,6 +61,7 @@ class MainItemActivity : AppCompatActivity() {
         recyclerViewImages = findViewById(R.id.recyclerViewImages)
         textDescription = findViewById(R.id.textDescription)
         cartButton = findViewById(R.id.cartButton)
+        editButton = findViewById(R.id.editButton)
 
         toolbar = findViewById(R.id.toolbar)
 
@@ -193,6 +196,12 @@ class MainItemActivity : AppCompatActivity() {
             }
         }
 
+        editButton.setOnClickListener {
+            val intent = Intent(this@MainItemActivity, EditProductActivity::class.java)
+            intent.putExtra("editProduct", product)
+            startActivity(intent)
+        }
+
 
         cartButton.setOnClickListener {
             product?.let { it1 -> GlobalVariables.cart.add(it1) }
@@ -220,6 +229,5 @@ class MainItemActivity : AppCompatActivity() {
         snapHelper.attachToRecyclerView(recyclerViewImages)
         val imageAdapter = MainItemImageAdapter(imageUrls)
         recyclerViewImages.adapter = imageAdapter
-
     }
 }
