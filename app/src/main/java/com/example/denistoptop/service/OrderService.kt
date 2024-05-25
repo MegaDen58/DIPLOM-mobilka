@@ -7,6 +7,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface OrderService {
@@ -19,5 +20,7 @@ interface OrderService {
     @GET("orders/{orderId}/products")
     fun getProductsForOrder(@Path("orderId") orderId: Long): Call<List<ProductDto>>
     @GET("orders/all")
-    fun getAllProducts(): Call<List<ProductDto>>
+    fun getAllOrders(): Call<List<OrderDto>>
+    @PUT("orders/updateType")
+    fun updateOrderType(@Body requestBody: RequestBody): Call<Void>
 }

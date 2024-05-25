@@ -12,5 +12,6 @@ class GlobalVariables {
         var cart: MutableList<ProductDto> = mutableListOf()
         var order: OrderDto? = null
         var selectedCart: MutableList<ProductDto> = mutableListOf()
+        var adminButton: Boolean = false
     }
 }

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.denistoptop.adapter.MainItemImageAdapter
 import com.example.denistoptop.dto.ProductDto
 import com.example.denistoptop.dto.UserDto
+import com.example.denistoptop.dto.UserManager
 import com.example.denistoptop.service.ProductService
 import com.example.denistoptop.service.UserService
 import okhttp3.MediaType
@@ -43,6 +44,11 @@ class MainItemActivity : AppCompatActivity() {
     private lateinit var userService: UserService
     private lateinit var productService: ProductService
 
+    override fun onResume() {
+        super.onResume()
+        fetchProductDetails()
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +75,15 @@ class MainItemActivity : AppCompatActivity() {
         val myButton = findViewById<ImageButton>(R.id.myButton)
         myButton.setOnClickListener {
             onBackPressed()
+        }
+
+        if(UserManager.getUserInfo(this)?.roles?.contains("ADMIN") == true){
+            editButton.isEnabled = true
+            deleteButton.isEnabled = true
+        }
+        else{
+            editButton.isEnabled = false
+            deleteButton.isEnabled = false
         }
 
         val secondButton = findViewById<ImageButton>(R.id.secondButton)
@@ -208,26 +223,51 @@ class MainItemActivity : AppCompatActivity() {
         }
 
         // Установка названия продукта
-        textProductName.text = product?.name ?: "ERROR"
-        textDescription.setText("Описание: " + product?.description)
+        product?.let { updateProductDetails(it) }
+    }
 
-        // Установка подходит для
+    private fun updateProductDetails(product: ProductDto) {
+        // Обновление деталей продукта в активити
+        textProductName.text = product.name ?: "ERROR"
+        textDescription.setText("Описание: " + product.description)
+
         val suitableForText = when {
-            product?.isSummer == true && product.isWinter == true -> "Подходит для всех сезонов"
-            product?.isSummer == true -> "Подходит для лета"
-            product?.isWinter == true -> "Подходит для зимы"
+            product.isSummer == true && product.isWinter == true -> "Подходит для всех сезонов"
+            product.isSummer == true -> "Подходит для лета"
+            product.isWinter == true -> "Подходит для зимы"
             else -> ""
         }
         textSuitableFor.text = suitableForText
 
         // Получение списка URL-адресов изображений
-        val imageUrls = product?.images?.map { imageName -> "http://94.228.112.46:8080/api/products/image/$imageName" } ?: emptyList()
+        val imageUrls = product.images?.map { imageName -> "http://94.228.112.46:8080/api/products/image/$imageName" } ?: emptyList()
 
-        // Настройка RecyclerView и адаптера
-        recyclerViewImages.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        val snapHelper = PagerSnapHelper()
-        snapHelper.attachToRecyclerView(recyclerViewImages)
+        // Обновление RecyclerView и адаптера
         val imageAdapter = MainItemImageAdapter(imageUrls)
         recyclerViewImages.adapter = imageAdapter
+    }
+
+    private fun fetchProductDetails() {
+        val product = intent.getSerializableExtra("editProduct") as? ProductDto
+        val call = product?.let { productService.getProductById(it.id) }
+        call?.enqueue(object : Callback<ProductDto> {
+            override fun onResponse(call: Call<ProductDto>, response: Response<ProductDto>) {
+                if (response.isSuccessful) {
+                    val product = response.body()
+                    if (product != null) {
+                        // Обновление деталей продукта в активити
+                        updateProductDetails(product)
+                    } else {
+                        Toast.makeText(this@MainItemActivity, "Продукт не найден", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this@MainItemActivity, "Ошибка при получении продукта", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ProductDto>, t: Throwable) {
+                Toast.makeText(this@MainItemActivity, "Произошла ошибка: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

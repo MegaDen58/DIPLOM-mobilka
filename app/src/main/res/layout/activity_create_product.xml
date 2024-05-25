@@ -72,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/summerCheckBox"
-        android:text="Select Images from Gallery"
+        android:text="Выбрать картинку из галереи"
         android:padding="16dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -87,7 +87,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/imagesRecyclerView"
-        android:text="Submit"
+        android:text="Создать"
         android:padding="16dp"/>
 
     <Button
@@ -95,6 +95,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/submitButton"
-        android:text="Clear"
+        android:text="Очистить"
         android:padding="16dp"/>
 </RelativeLayout>

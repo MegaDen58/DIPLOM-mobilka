@@ -4,7 +4,7 @@
     android:id="@+id/bottomToolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="?attr/colorPrimary"
+    android:background="@color/green"
     android:layout_alignParentBottom="true"
     android:layout_gravity="bottom"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
@@ -24,7 +24,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:scaleType="fitXY"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/cart"
         app:layout_constraintBottom_toTopOf="@+id/favourites"
         android:contentDescription="Button description"
@@ -35,7 +35,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:scaleType="fitXY"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/main"
         app:layout_constraintBottom_toTopOf="@+id/cart"
         android:contentDescription="Button description"
@@ -46,7 +46,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:scaleType="fitXY"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/history"
         app:layout_constraintBottom_toTopOf="@+id/main"
         android:contentDescription="Button description"
@@ -57,9 +57,9 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:scaleType="fitXY"
-        android:layout_marginStart="10dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/burger"
         android:contentDescription="Menu"
-        android:layout_gravity="start"/>
+        android:layout_gravity="end"/>
 
 </androidx.appcompat.widget.Toolbar>

@@ -13,17 +13,10 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
-import com.example.denistoptop.adapter.OnOrderClickListener
-import com.example.denistoptop.adapter.OrderAdapter
-import com.example.denistoptop.dto.OrderDto
-import com.example.denistoptop.dto.ProductDto
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.startActivity
 import com.example.denistoptop.dto.UserManager
-import com.example.denistoptop.service.OrderService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class ToolbarButtonClickListener(private val context: Context, private val toolbar: Toolbar, private val activity: Activity) : View.OnClickListener {
     private var popupWindow: PopupWindow? = null
@@ -94,7 +87,7 @@ class ToolbarButtonClickListener(private val context: Context, private val toolb
 
                 // Задание действий для кнопок
                 replenishButton.setOnClickListener {
-                    // Действие при нажатии на кнопку пополнения баланса
+                    showReplenishDialog()
                 }
                 catalogButton.setOnClickListener {
                     // Действие при нажатии на кнопку "Каталог"
@@ -121,7 +114,11 @@ class ToolbarButtonClickListener(private val context: Context, private val toolb
                     popupWindow?.dismiss() // Закрытие всплывающего окна
                 }
                 orderButton.setOnClickListener {
-
+                    val intent = Intent(context, AdminOrdersActivity::class.java)
+                    context.startActivity(intent)
+                    activity.overridePendingTransition(0, 0)
+                    GlobalVariables.adminButton = true
+                    popupWindow?.dismiss() // Закрытие всплывающего окна
                 }
 
                 // Создание всплывающего окна
@@ -142,4 +139,34 @@ class ToolbarButtonClickListener(private val context: Context, private val toolb
         val favouritesButton = toolbar.findViewById<ImageButton>(R.id.favourites)
         favouritesButton.setBackgroundResource(R.drawable.noselectedheart)
     }
+    private fun showReplenishDialog() {
+        // Создаем и отображаем диалоговое окно
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_replenish, null)
+        val dialog = AlertDialog.Builder(context)
+            .setView(dialogView)
+            .create()
+
+        dialogView.findViewById<Button>(R.id.submit_button).setOnClickListener {
+            val amountInput = dialogView.findViewById<EditText>(R.id.input_amount).text.toString()
+            if (amountInput.isNotEmpty()) {
+                val amount = amountInput.toIntOrNull()
+                if (amount != null) {
+                    // Переход на другое активити с переданными данными
+                    val intent = Intent(context, WebViewActivity::class.java).apply {
+                        putExtra("EXTRA_AMOUNT", amount)
+                    }
+                    context.startActivity(intent)
+                    dialog.dismiss()
+                } else {
+                    // Обработка ошибки неверного ввода
+                    dialogView.findViewById<EditText>(R.id.input_amount).error = "Введите корректное целое число"
+                }
+            } else {
+                dialogView.findViewById<EditText>(R.id.input_amount).error = "Поле не должно быть пустым"
+            }
+        }
+
+        dialog.show()
+    }
+
 }
