@@ -20,4 +20,7 @@ interface UserService {
     @POST("users/removeFavourite")
     fun removeFavourite(@Body request: RequestBody): Call<UserDto>
     @POST("users/setBalance")
-    fun setUserBalance(@Body request: RequestBody): Call<UserDto>}
+    fun setUserBalance(@Body request: RequestBody): Call<UserDto>
+    @POST("users/{userId}/updateBalance")
+    fun updateUserBalance(@Path("userId") userId: Long, @Body request: RequestBody): Call<UserDto>
+}

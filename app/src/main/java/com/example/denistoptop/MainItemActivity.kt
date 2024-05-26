@@ -32,6 +32,9 @@ class MainItemActivity : AppCompatActivity() {
     private lateinit var textProductName: TextView
     private lateinit var textDescription: TextView
     private lateinit var textSuitableFor: TextView
+    private lateinit var textMaterial: TextView
+    private lateinit var textColor: TextView
+    private lateinit var textSize: TextView
     private lateinit var recyclerViewImages: RecyclerView
     private lateinit var toolbar: Toolbar
     private lateinit var cartButton: Button
@@ -66,9 +69,13 @@ class MainItemActivity : AppCompatActivity() {
         textSuitableFor = findViewById(R.id.textSuitableFor)
         recyclerViewImages = findViewById(R.id.recyclerViewImages)
         textDescription = findViewById(R.id.textDescription)
+        textMaterial = findViewById(R.id.textMaterial)
+        textColor = findViewById(R.id.textColor)
+        textSize = findViewById(R.id.textSize)
+
         cartButton = findViewById(R.id.cartButton)
         editButton = findViewById(R.id.editButton)
-
+        deleteButton = findViewById(R.id.deleteButton)
         toolbar = findViewById(R.id.toolbar)
 
         val product: ProductDto? = intent.getSerializableExtra("product") as? ProductDto
@@ -87,7 +94,6 @@ class MainItemActivity : AppCompatActivity() {
         }
 
         val secondButton = findViewById<ImageButton>(R.id.secondButton)
-        deleteButton = findViewById<ImageButton>(R.id.deleteButton)
 
 
         val call = userService.getUserById(GlobalVariables.userId.toString())
@@ -230,6 +236,9 @@ class MainItemActivity : AppCompatActivity() {
         // Обновление деталей продукта в активити
         textProductName.text = product.name ?: "ERROR"
         textDescription.setText("Описание: " + product.description)
+        textMaterial.setText("Материал: " + product.material)
+        textColor.setText("Цвет: " + product.color)
+        textSize.setText("Размер: " + product.size)
 
         val suitableForText = when {
             product.isSummer == true && product.isWinter == true -> "Подходит для всех сезонов"

@@ -125,7 +125,7 @@ class MainActivity : AppCompatActivity() {
         dropFilterButton.setOnClickListener {
             val myDataset = allProducts?.map {
                 val imageUrl = if (it.images.isNotEmpty()) "http://94.228.112.46:8080/api/products/image/${it.images[0]}" else "" // URL первого изображения
-                MainData(imageUrl, it.name)
+                MainData(imageUrl, it.name, it.price.toString())
             } ?: emptyList()
             recyclerView.adapter = MainAdapter(myDataset)
             recyclerView.layoutManager = LinearLayoutManager(this)
@@ -179,7 +179,7 @@ class MainActivity : AppCompatActivity() {
 
                     val myDataset = filteredProducts?.map {
                         val imageUrl = if (it.images.isNotEmpty()) "http://94.228.112.46:8080/api/products/image/${it.images[0]}" else "" // URL первого изображения
-                        MainData(imageUrl, it.name)
+                        MainData(imageUrl, it.name, it.price.toString())
                     } ?: emptyList()
                     recyclerView.adapter = MainAdapter(myDataset)
                     recyclerView.layoutManager = LinearLayoutManager(this)
@@ -210,7 +210,7 @@ class MainActivity : AppCompatActivity() {
     private fun showFilteredProducts() {
         val myDataset = filteredProductsByName?.map {
             val imageUrl = if (it.images.isNotEmpty()) "http://94.228.112.46:8080/api/products/image/${it.images[0]}" else "" // URL первого изображения
-            MainData(imageUrl, it.name)
+            MainData(imageUrl, it.name, it.price.toString())
         } ?: emptyList()
         recyclerView.adapter = MainAdapter(myDataset)
         recyclerView.layoutManager = LinearLayoutManager(this)

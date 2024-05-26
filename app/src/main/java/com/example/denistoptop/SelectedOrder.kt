@@ -92,7 +92,7 @@ class SelectedOrder : AppCompatActivity() {
 
         val myDataset = GlobalVariables.selectedCart?.map {
             val imageUrl = if (it.images.isNotEmpty()) "http://94.228.112.46:8080/api/products/image/${it.images[0]}" else ""
-            MainData(imageUrl, it.name)
+            MainData(imageUrl, it.name, it.price.toString())
         } ?: emptyList()
         recyclerView.adapter = MainAdapter(myDataset)
         recyclerView.layoutManager = LinearLayoutManager(this)

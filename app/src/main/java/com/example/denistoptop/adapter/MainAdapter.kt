@@ -49,6 +49,7 @@ class MainAdapter(private val dataSet: List<MainData>) :
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val item = dataSet[position]
         viewHolder.binding.textView.text = item.text
+        viewHolder.binding.textViewRight.text = "${item.text2}₽/сутки"
         if (item.imageResource.isNotEmpty()) {
             loadImage(item.imageResource, viewHolder.binding.imageView)
         }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:background="@color/light_green"
+    android:layout_height="match_parent">
 
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
@@ -23,7 +23,6 @@
             android:contentDescription="Back Button"
             android:layout_gravity="start"/>
 
-
         <ImageButton
             android:id="@+id/secondButton"
             android:layout_width="35dp"
@@ -41,7 +40,7 @@
             android:background="@drawable/bucket"
             android:layout_marginEnd="24dp"
             android:scaleType="fitXY"
-            android:contentDescription="Second Button"
+            android:contentDescription="Delete Button"
             android:layout_gravity="end"/>
 
         <ImageButton
@@ -51,57 +50,99 @@
             android:background="@drawable/edit"
             android:layout_marginEnd="24dp"
             android:scaleType="fitXY"
-            android:contentDescription="Second Button"
+            android:contentDescription="Edit Button"
             android:layout_gravity="end"/>
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- Заголовок с именем продукта -->
-    <TextView
-        android:id="@+id/textProductName"
-        android:layout_width="wrap_content"
+    <!-- ScrollView для прокручивания контента -->
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="Product Name"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_above="@id/cartButton"> <!-- Размещение выше кнопки -->
 
-    <!-- RecyclerView для отображения изображений -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewImages"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_below="@id/textProductName"
-        android:layout_marginTop="16dp"
-        android:clipToPadding="false"
-        android:scrollbars="horizontal" />
+        <!-- LinearLayout внутри ScrollView -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-    <!-- Описание продукта -->
-    <TextView
-        android:id="@+id/textDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/recyclerViewImages"
-        android:layout_marginTop="16dp"
-        android:paddingStart="16dp"
-        android:text="Description: "
-        android:textSize="18sp"
-        android:textStyle="bold" />
+            <!-- Заголовок с именем продукта -->
+            <TextView
+                android:id="@+id/textProductName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Product Name"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
+            <!-- RecyclerView для отображения изображений -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewImages"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginTop="16dp"
+                android:clipToPadding="false"
+                android:scrollbars="horizontal" />
 
-    <!-- Подходит для зимы или зимой и летом -->
-    <TextView
-        android:id="@+id/textSuitableFor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textDescription"
-        android:layout_marginTop="8dp"
-        android:paddingStart="16dp"
-        android:text="Suitable for: "
-        android:textSize="18sp"
-        android:textStyle="bold" />
+            <!-- Описание продукта -->
+            <TextView
+                android:id="@+id/textDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:paddingStart="16dp"
+                android:text="Description: "
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
+            <!-- Подходит для зимы или зимой и летом -->
+            <TextView
+                android:id="@+id/textSuitableFor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingStart="16dp"
+                android:text="Suitable for: "
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textMaterial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingStart="16dp"
+                android:text="Material: "
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingStart="16dp"
+                android:text="Color: "
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingStart="16dp"
+                android:text="Size: "
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Кнопка вне ScrollView -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/cartButton"
         android:layout_width="match_parent"
@@ -109,10 +150,9 @@
         android:layout_marginTop="50dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_below="@id/textSuitableFor"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/register_button"
         android:text="В корзину"
         android:textColor="#FFFFFF"
         android:textSize="30dp"/>
-
 </RelativeLayout>
