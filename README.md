@@ -1,7 +1,8 @@
 ### GearGo
 
-![image](https://github.com/MegaDen58/DIPLOM-mobilka/assets/96517069/209a2471-1d65-487a-94b8-f655049ba509)
+![qr-code (1)](https://github.com/MegaDen58/DIPLOM-mobilka/assets/96517069/245bacb0-fa74-474f-8ad9-5dd4f969ea97)
 
+https://drive.google.com/uc?export=download&confirm=no_antivirus&id=19fc8beSjunIUO5lCjzOT5zEdgGxQE38g
 ---
 GearGo - это мобильное приложение для аренды спортивного и туристического инвентаря. Приложение предоставляет удобную платформу для поиска, бронирования и аренды оборудования для активного отдыха и приключений.
 ---
